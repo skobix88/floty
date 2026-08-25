@@ -41,6 +41,16 @@ xcodegen generate
 open Floty.xcodeproj
 ```
 
+## Installing
+
+Until signed releases exist, build and install locally:
+
+```bash
+./scripts/install.sh
+```
+
+This builds Release and puts `Floty.app` into `/Applications`.
+
 ## Documentation
 
 Project documentation is in German: [ANFORDERUNGEN.md](ANFORDERUNGEN.md) (what

@@ -41,6 +41,10 @@ belegt ist" weiter unten.
 | Ordnerwechsel im laufenden Betrieb | `Panel/PanelController.swift` | gebaut, nur kompiliert |
 | Oberfläche deutsch und englisch | `Resources/Localizable.xcstrings` | im gebauten Bündel nachgewiesen (`de.lproj`, `en.lproj`) |
 
+**Installation:** `scripts/install.sh` baut Release und legt die App nach
+`/Applications`. Vorgezogen aus M4, weil eine App im Build-Ordner sich nicht über
+„Programme" starten lässt — nach dem ersten Beenden war Floty sonst weg.
+
 ### M3 — Es geht raus · offen
 
 Export als `.md`, Share Sheet, Obsidian-Übergabe, App-Icon.

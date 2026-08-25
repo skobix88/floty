@@ -17,6 +17,8 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   Einstellungsfenster für Transparenz, Pin, Ausblendeverhalten, Start bei Login,
   globalen Kurzbefehl, Notiz- und Vault-Ordner; Oberfläche deutsch und englisch.
 
+- `scripts/install.sh`: baut Release und installiert nach `/Applications`.
+
 ### Behoben
 
 - Die App startete lautlos ohne Fenster: `@main` auf dem Delegaten verbindet bei

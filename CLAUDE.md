@@ -31,6 +31,10 @@ xcodebuild test -project Floty.xcodeproj -scheme Floty
 Nach jeder neuen Quelldatei `xcodegen generate` — sonst wird sie nicht gebaut.
 Geändert wird `project.yml`; die erzeugte `.xcodeproj` ist nicht im Git.
 
+`./scripts/install.sh` baut Release und legt Floty nach `/Applications`. Aus dem
+Build-Ordner heraus gestartete Fassungen sind nur zum Prüfen — sie lassen sich
+nicht über „Programme" starten und überleben ein Aufräumen von DerivedData nicht.
+
 ## Versionsverwaltung
 
 Zweig `main`. Ein Commit je abgeschlossener Sache, Doku im selben Commit wie der
