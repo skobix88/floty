@@ -12,9 +12,16 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   Markdown-Datei mit automatischem Speichern, Live-Styling, klickbare
   Checkboxen, Listenfortsetzung und Formatierungs-Shortcuts.
 
+- M2: mehrere Notizen als Tabs mit Anlegen, Umbenennen, Verschieben und
+  Löschen in den Papierkorb; Fußleiste mit Vorschau, Kopieren und Löschen;
+  Einstellungsfenster für Transparenz, Pin, Ausblendeverhalten, Start bei Login,
+  globalen Kurzbefehl, Notiz- und Vault-Ordner; Oberfläche deutsch und englisch.
+
 ### Behoben
 
 - Die App startete lautlos ohne Fenster: `@main` auf dem Delegaten verbindet bei
   AppKit ohne NIB-Datei keinen Delegaten. Eigener Einstiegspunkt ergänzt.
 - Eine gemerkte Fensterposition auf einem nicht mehr vorhandenen Bildschirm
   machte das Panel unerreichbar. Position wird vor dem Anzeigen geprüft.
+- Das Panel öffnete auf einem zweiten Display statt auf dem Bildschirm mit der
+  Menüleiste.

@@ -32,6 +32,19 @@ final class NoteStore {
 
     let folder: URL
     private(set) var notes: [NoteFile] = []
+
+    /// Tab order, by note name. Set from `AppSettings`; reading it back always
+    /// gives the order actually in effect, which is what gets persisted.
+    var preferredOrder: [String] {
+        get { orderNames }
+        set {
+            orderNames = newValue
+            notes = NoteOrder.arrange(notes, preferring: orderNames)
+            orderNames = notes.map(\.name)
+        }
+    }
+
+    private var orderNames: [String] = []
     private(set) var lastError: Error?
 
     /// Text per note, kept in memory while the app runs.
@@ -70,21 +83,21 @@ final class NoteStore {
     /// Picks up notes added by another Mac through iCloud, and the extra file
     /// iCloud Drive leaves behind when it cannot merge a conflict.
     func reloadFromDisk() {
-        let found = (try? FileManager.default.contentsOfDirectory(
+        let contents = (try? FileManager.default.contentsOfDirectory(
             at: folder,
             includingPropertiesForKeys: nil,
             options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
         )) ?? []
 
-        let markdown = found
-            .filter { $0.pathExtension.lowercased() == NoteFile.fileExtension }
-            .sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
+        let markdown = contents.filter { $0.pathExtension.lowercased() == NoteFile.fileExtension }
 
         var known = Dictionary(uniqueKeysWithValues: notes.map { ($0.url, $0) })
-        notes = markdown.map { url in
+        let found = markdown.map { url -> NoteFile in
             if let existing = known.removeValue(forKey: url) { return existing }
             return NoteFile(url: url)
         }
+        notes = NoteOrder.arrange(found, preferring: orderNames)
+        orderNames = notes.map(\.name)
     }
 
     func text(for id: NoteFile.ID) -> String {
@@ -162,6 +175,7 @@ final class NoteStore {
         try Data().write(to: url, options: .atomic)
         let note = NoteFile(url: url)
         notes.append(note)
+        orderNames = notes.map(\.name)
         texts[note.id] = ""
         savedTexts[note.id] = ""
         return note
@@ -183,6 +197,7 @@ final class NoteStore {
         save(id)
         try FileManager.default.moveItem(at: notes[index].url, to: target)
         notes[index].url = target
+        orderNames = notes.map(\.name)
         return notes[index]
     }
 
@@ -193,7 +208,14 @@ final class NoteStore {
         saveTasks[id] = nil
         try FileManager.default.trashItem(at: notes[index].url, resultingItemURL: nil)
         notes.remove(at: index)
+        orderNames = notes.map(\.name)
         texts[id] = nil
         savedTexts[id] = nil
+    }
+
+    /// Moves a tab left or right.
+    func move(_ id: NoteFile.ID, by offset: Int) {
+        guard let note = notes.first(where: { $0.id == id }) else { return }
+        preferredOrder = NoteOrder.moving(orderNames, name: note.name, by: offset)
     }
 }

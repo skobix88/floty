@@ -16,6 +16,7 @@ final class AppSettings {
         static let hidesOnClickOutside = "hidesOnClickOutside"
         static let panelFrame = "panelFrame"
         static let activeNoteName = "activeNoteName"
+        static let noteOrder = "noteOrder"
     }
 
     /// Below this the text stops being readable on a busy desktop.
@@ -27,6 +28,9 @@ final class AppSettings {
     var isPinned: Bool { didSet { defaults.set(isPinned, forKey: Key.isPinned) } }
     var hidesOnClickOutside: Bool { didSet { defaults.set(hidesOnClickOutside, forKey: Key.hidesOnClickOutside) } }
     var activeNoteName: String? { didSet { defaults.set(activeNoteName, forKey: Key.activeNoteName) } }
+    /// Tab order by note name. Device local on purpose: the notes folder stays
+    /// free of Floty's own files so Obsidian sees nothing but notes.
+    var noteOrder: [String] { didSet { defaults.set(noteOrder, forKey: Key.noteOrder) } }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -35,6 +39,7 @@ final class AppSettings {
         isPinned = defaults.bool(forKey: Key.isPinned)
         hidesOnClickOutside = defaults.object(forKey: Key.hidesOnClickOutside) as? Bool ?? true
         activeNoteName = defaults.string(forKey: Key.activeNoteName)
+        noteOrder = defaults.stringArray(forKey: Key.noteOrder) ?? []
     }
 
     // MARK: - Notes folder
@@ -61,6 +66,21 @@ final class AppSettings {
             }
             defaults.set(newValue.path(percentEncoded: false), forKey: Key.notesFolderPath)
             defaults.set(try? FolderAccess.makeBookmark(for: newValue), forKey: Key.notesFolderBookmark)
+        }
+    }
+
+    /// Where "hand over to Obsidian" writes to. Nil until the user picks one.
+    var vaultFolder: URL? {
+        get {
+            guard let bookmark = defaults.data(forKey: Key.vaultFolderBookmark) else { return nil }
+            return FolderAccess.resolve(bookmark: bookmark)
+        }
+        set {
+            guard let newValue else {
+                defaults.removeObject(forKey: Key.vaultFolderBookmark)
+                return
+            }
+            defaults.set(try? FolderAccess.makeBookmark(for: newValue), forKey: Key.vaultFolderBookmark)
         }
     }
 

@@ -102,53 +102,29 @@ enum MarkdownHighlighter {
 
     // MARK: - Inline level
 
-    private enum InlineStyle {
-        case bold, italic, strikethrough, code
-    }
-
-    /// Order matters: `**` has to be recognised before `*`.
-    private static let patterns: [(regex: NSRegularExpression, style: InlineStyle)] = {
-        func compile(_ pattern: String) -> NSRegularExpression {
-            // The patterns are constants; a failure here is a programming error.
-            try! NSRegularExpression(pattern: pattern)
-        }
-        return [
-            (compile(#"(\*\*)([^\s*][^*]*?[^\s*]|[^\s*])(\*\*)"#), .bold),
-            (compile(#"(~~)([^\s~][^~]*?[^\s~]|[^\s~])(~~)"#), .strikethrough),
-            (compile(#"(?<![*\w])(\*)([^\s*][^*]*?[^\s*]|[^\s*])(\*)(?![*\w])"#), .italic),
-            (compile(#"(`)([^`]+)(`)"#), .code)
-        ]
-    }()
-
     private static func styleInline(_ result: NSMutableAttributedString, raw: String, theme: EditorTheme) {
-        let full = NSRange(location: 0, length: (raw as NSString).length)
-        for (regex, style) in patterns {
-            for match in regex.matches(in: raw, range: full) {
-                guard match.numberOfRanges == 4 else { continue }
-                let inner = match.range(at: 2)
-                guard inner.location != NSNotFound, inner.upperBound <= result.length else { continue }
+        for span in MarkdownSpans.scan(raw) {
+            guard span.inner.upperBound <= result.length else { continue }
 
-                switch style {
-                case .bold:
-                    addTrait(.bold, to: result, range: inner, theme: theme)
-                case .italic:
-                    addTrait(.italic, to: result, range: inner, theme: theme)
-                case .strikethrough:
-                    result.addAttributes([
-                        .strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                        .strikethroughColor: theme.text
-                    ], range: inner)
-                case .code:
-                    result.addAttributes([
-                        .font: theme.monospacedFont,
-                        .foregroundColor: theme.code
-                    ], range: inner)
-                }
+            switch span.style {
+            case .bold:
+                addTrait(.bold, to: result, range: span.inner, theme: theme)
+            case .italic:
+                addTrait(.italic, to: result, range: span.inner, theme: theme)
+            case .strikethrough:
+                result.addAttributes([
+                    .strikethroughStyle: NSUnderlineStyle.single.rawValue,
+                    .strikethroughColor: theme.text
+                ], range: span.inner)
+            case .code:
+                result.addAttributes([
+                    .font: theme.monospacedFont,
+                    .foregroundColor: theme.code
+                ], range: span.inner)
+            }
 
-                for marker in [match.range(at: 1), match.range(at: 3)]
-                where marker.location != NSNotFound && marker.upperBound <= result.length {
-                    result.addAttribute(.foregroundColor, value: theme.marker, range: marker)
-                }
+            for marker in [span.opening, span.closing] where marker.upperBound <= result.length {
+                result.addAttribute(.foregroundColor, value: theme.marker, range: marker)
             }
         }
     }

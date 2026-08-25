@@ -5,14 +5,15 @@ import SwiftUI
 @MainActor
 final class PanelController: NSObject, NSWindowDelegate {
 
-    private let store: NoteStore
+    private var store: NoteStore
     private let settings: AppSettings
+    private let onOpenSettings: () -> Void
     private var panel: FlotyPanel?
-    private var pinObservation: NSKeyValueObservation?
 
-    init(store: NoteStore, settings: AppSettings) {
+    init(store: NoteStore, settings: AppSettings, onOpenSettings: @escaping () -> Void) {
         self.store = store
         self.settings = settings
+        self.onOpenSettings = onOpenSettings
         super.init()
     }
 
@@ -50,17 +51,30 @@ final class PanelController: NSObject, NSWindowDelegate {
         )
         let panel = FlotyPanel(contentRect: frame)
         panel.delegate = self
-        panel.contentView = NSHostingView(rootView: PanelView(
-            store: store,
-            settings: settings,
-            onClose: { [weak self] in self?.hide() }
-        ))
+        panel.contentView = makeContentView()
         panel.setFrame(frame, display: false)
         return panel
     }
 
     /// Opens where the user is looking: the screen the pointer is on, not
     /// whichever screen AppKit happens to call main.
+    private func makeContentView() -> NSView {
+        NSHostingView(rootView: PanelView(
+            store: store,
+            settings: settings,
+            onClose: { [weak self] in self?.hide() },
+            onOpenSettings: { [weak self] in self?.onOpenSettings() }
+        ))
+    }
+
+    /// Used when the user picks a different notes folder. The window stays put,
+    /// only its contents are rebuilt.
+    func replaceStore(_ newStore: NoteStore) {
+        store.flush()
+        store = newStore
+        panel?.contentView = makeContentView()
+    }
+
     private func defaultFrame() -> NSRect {
         let pointer = NSEvent.mouseLocation
         let screen = NSScreen.screens.first { $0.frame.contains(pointer) }

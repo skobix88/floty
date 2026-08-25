@@ -14,6 +14,14 @@
   Doppelklick ohne Gatekeeper-Warnung, auch für Fremde.
 - **Automatische Updates über Sparkle.** Setzt Notarisierung voraus.
 
+- **Tabs per Ziehen umsortieren.** Zurzeit geht das über das `…`-Menü mit
+  „Nach links" und „Nach rechts". Ziehen wäre die gewohntere Geste, ist in
+  SwiftUI aber deutlich aufwendiger — lohnt erst, wenn viele Tabs zusammenkommen.
+- **Start bei Login prüfen.** `SMAppService` verweigert die Registrierung bei nur
+  ad-hoc signierten Apps unter Umständen. Der Schalter springt dann zurück und
+  zeigt die Meldung an; ob das im echten Release-Bündel funktioniert, ist erst
+  mit Developer ID zu beurteilen.
+
 ## Zu klären
 
 - GitHub-Kontoname und Repository-Name — spätestens zu M4.

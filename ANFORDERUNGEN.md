@@ -79,9 +79,11 @@ Durchstreichen muss auch unabhängig von Checkboxen möglich sein.
 Eine Floty-Instanz enthält mehrere Notizen als Tabs. Ein Tab entspricht genau
 einer `.md`-Datei; der Tabname ist der Dateiname.
 
-- Neue Notiz per `+` hinzufügen
-- Tab umbenennen (benennt die Datei um)
-- Tab löschen (in den Papierkorb, nicht endgültig)
+- Neue Notiz per `+` hinzufügen — sie heißt „Notiz", „Notiz 2" und so weiter
+  und lässt sich sofort umbenennen
+- Tab umbenennen per Doppelklick auf den Reiter (benennt die Datei mit um)
+- Tab nach links oder rechts verschieben
+- Tab löschen — nach Rückfrage in den Papierkorb, nie endgültig
 - Zwischen Notizen wechseln
 
 Reihenfolge und zuletzt aktiver Tab werden gerätelokal gemerkt, nicht im
@@ -96,6 +98,7 @@ Notizordner abgelegt.
   Editor lesbar.
 - **Kopieren:** gesamter Notiztext in die Zwischenablage.
 - **Vorschau:** Umschalten zwischen Editor und gerenderter Markdown-Ansicht.
+  In der Vorschau verschwinden die Marker; sie ist nicht bearbeitbar.
 - **Export** als `.md` an einen beliebigen Ort.
 - **Teilen** über das macOS Share Sheet.
 
@@ -118,10 +121,15 @@ weitergereicht und hier erledigt.
 
 ## 9. Einstellungen
 
-**Fenster:** Transparenz · Standardgröße · Pin-Verhalten
-**Verhalten:** Start bei Login · globaler Hotkey · beim Klick außerhalb schließen
+**Fenster:** Transparenz (stufenlos) · immer im Vordergrund · beim Klick
+außerhalb schließen (nur wirksam, solange nicht festgepinnt)
+**Verhalten:** Start bei Login · globaler Kurzbefehl
 **Ablage:** Notizordner · Obsidian-Vault-Ordner
 **Sprache:** folgt der Systemsprache (Deutsch und Englisch)
+
+Die Fenstergröße wird nicht eingestellt, sondern gezogen — und gemerkt. Ist die
+gemerkte Position auf keinem vorhandenen Bildschirm mehr erreichbar, öffnet
+Floty wieder an seinem Standardplatz.
 
 ## 10. Icon
 

@@ -2,7 +2,7 @@
 
 Was gebaut ist, wie es geprüft wurde, und warum es so entschieden wurde.
 
-**Stand: 25.08.2026 — M1 gebaut, 47 Prüfungen laufen durch, Panel in der laufenden App bestätigt.**
+**Stand: 25.08.2026 — M1 und M2 gebaut, 62 Prüfungen laufen durch.**
 
 ---
 
@@ -28,10 +28,18 @@ Was gebaut ist, wie es geprüft wurde, und warum es so entschieden wurde.
 **Offen aus M1:** noch nichts von Hand nachgestellt — siehe „Was noch nicht
 belegt ist" weiter unten.
 
-### M2 — Es ist bedienbar · offen
+### M2 — Es ist bedienbar · gebaut
 
-Tabs anlegen/umbenennen/löschen/wechseln, Einstellungsfenster, Fußleiste
-(Kopieren, Vorschau, Löschen), Pin-Knopf, Lokalisierung de+en.
+| Baustein | Datei | Stand |
+|---|---|---|
+| Tabs anlegen, wechseln, umbenennen (Doppelklick), löschen | `Panel/TabBarView.swift` | gebaut, nur kompiliert |
+| Tab-Reihenfolge nach links/rechts, überlebt Neustarts | `Storage/NoteOrder.swift` | automatisiert geprüft |
+| Fußleiste: Vorschau, Kopieren, Papierkorb mit Rückfrage | `Panel/FooterView.swift` | gebaut, nur kompiliert |
+| Vorschau ohne Marker | `Markdown/PreviewRenderer.swift` | automatisiert geprüft |
+| Einstellungsfenster: Transparenz, Pin, Klick-außerhalb, Login-Start, Hotkey, Notizordner, Vault | `Settings/SettingsView.swift` | gebaut, nur kompiliert |
+| Start bei Login über `SMAppService` | `Settings/LoginItem.swift` | gebaut, nur kompiliert |
+| Ordnerwechsel im laufenden Betrieb | `Panel/PanelController.swift` | gebaut, nur kompiliert |
+| Oberfläche deutsch und englisch | `Resources/Localizable.xcstrings` | im gebauten Bündel nachgewiesen (`de.lproj`, `en.lproj`) |
 
 ### M3 — Es geht raus · offen
 
@@ -156,6 +164,35 @@ eigene Fensterwiederherstellung nicht dagegen arbeitet.
 Reine Geometrie, ohne AppKit-Zustand — deshalb vollständig automatisiert geprüft,
 einschließlich des Falls „zweiter Bildschirm abgezogen".
 
+### Ein Scanner für Inline-Marker, zwei Verwendungen
+
+Editor und Vorschau müssen sich darüber einig sein, was als Hervorhebung zählt —
+sonst sieht die Vorschau anders aus als das, was man geschrieben hat.
+`Markdown/MarkdownSpans.swift` findet die Bereiche, der Editor blendet die Marker
+blass ein, die Vorschau wirft sie weg. Der Highlighter benutzt seit M2 denselben
+Scanner statt einer eigenen Kopie der Ausdrücke.
+
+Die Vorschau ist bewusst die einzige Stelle, an der Text *nicht* eins zu eins mit
+der Datei ist. Das ist ungefährlich, weil sie nicht bearbeitbar ist.
+
+### Tab-Reihenfolge über Namen, nicht über Kennungen
+
+Kennungen leben nur so lange wie der Programmlauf; die Reihenfolge muss einen
+Neustart überstehen. Sie wird deshalb als Liste von Notiznamen in `UserDefaults`
+gehalten. Eine Notiz, die über iCloud dazukommt, während Floty zu war, steht in
+dieser Liste nicht — sie landet darum berechenbar am Ende statt irgendwo in der
+Mitte. Der Notizordner bleibt frei von Floty-eigenen Dateien und damit
+Obsidian-tauglich.
+
+### Das Panel öffnet auf dem Bildschirm mit der Menüleiste
+
+Zuerst probiert und wieder verworfen: der Bildschirm, auf dem der Mauszeiger
+steht. Das klingt freundlicher, hängt aber davon ab, wo der Zeiger zufällig
+liegt — im Betrieb erschien das Panel dadurch auf einem zweiten Display, auf das
+der Nutzer nicht schaut. `NSScreen.main` taugt ebenfalls nicht, das bedeutet
+„hat das Tastaturfenster". Genommen wird `NSScreen.screens[0]`, der Bildschirm
+mit der Menüleiste — dort, wo eine Menüleisten-App hingehört.
+
 ### Ad-hoc-Signierung schaltet Hardened Runtime ab
 
 `ENABLE_HARDENED_RUNTIME: YES` steht in `project.yml`, Xcode meldet beim Bauen
@@ -183,7 +220,7 @@ laufen, sonst ist die Untergrenze neu zu entscheiden.
 
 ## Prüfung
 
-**47 Prüfungen in 7 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
+**62 Prüfungen in 9 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
 Das Testschema setzt `FLOTY_TESTING=1`; `NoteStore` nimmt dann nur noch Ordner
 unterhalb des Temp-Verzeichnisses an, und der `AppDelegate` überspringt beim
 Start seine gesamte Einrichtung — sonst würde der Test-Host den echten
@@ -197,6 +234,8 @@ Notizordner öffnen.
 | Schnellformatierung | Einfassen, leere Auswahl, Marker innerhalb und außerhalb der Auswahl entfernen, Zeilen zu Aufgaben und zurück, gemischte Auswahl |
 | Hervorhebung | **Längengleichheit** der Darstellung, gezeichnetes Kästchen, Durchstreichung nur bei erledigt, echte Schriftschnitte, Marker bleiben sichtbar, unvollständige Marker, Überschrift |
 | Fensterplatzierung | Standardposition, fehlende gemerkte Position, sichtbare Position bleibt, zweiter Bildschirm bleibt, abgezogener Bildschirm holt zurück, knappe Überlappung, leerer Rahmen |
+| Tab-Reihenfolge | gemerkte Reihenfolge gewinnt, Unbekanntes hinten, verschwundene Namen stören nicht, natürliche Sortierung, Verschieben, Anschläge |
+| Vorschau | Marker verschwinden, Formatierung bleibt, Überschriften, Aufgaben mit Durchstreichung, Aufzählungen, mehrere Zeilen, Formatierung in Aufgaben, unvollständige Marker, leerer Text |
 | Notizablage | Testordner-Sperre, Schreiben/Wiedereinlesen, unveränderte Datei bleibt unangetastet, Umbenennen, Namenskonflikte, Schrägstriche im Namen, Papierkorb statt Löschen, Fremddatei wird Tab, Nicht-Markdown wird ignoriert |
 
 ### Was noch nicht belegt ist
@@ -215,7 +254,10 @@ für das Terminal:
 2. Hotkey aus einer Vollbild-App heraus, ohne die darunterliegende App zu deaktivieren
 3. Ausblenden bei Klick außerhalb
 4. Transparenzstufen und Lesbarkeit
-5. Klick auf das Kästchen im laufenden Editor
-6. Wie gut das Menüleisten-Symbol bei sehr voller Leiste auffindbar ist — es
+5. Wie gut das Menüleisten-Symbol bei sehr voller Leiste auffindbar ist — es
    wird nachweislich gesetzt (x≈247, 32×30 pt), die Platzierung entscheidet aber
    macOS, siehe TODO
+6. Alle Bedienelemente aus M2: Tabs anlegen, umbenennen, verschieben, löschen,
+   Fußleiste, Einstellungsfenster, Login-Start und Ordnerwechsel. Der Aufbau des
+   Panels stürzt nicht ab, aber Menüs und Rückfragen zeigen sich erst beim
+   Anklicken.

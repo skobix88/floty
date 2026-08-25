@@ -9,6 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var store: NoteStore?
     private var panelController: PanelController?
     private var menuBarController: MenuBarController?
+    private var settingsWindowController: SettingsWindowController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // The unit test bundle is hosted by this app, so launching would
@@ -21,21 +22,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         self.settings = settings
 
         let folder = settings.notesFolder ?? FolderAccess.suggestedFolder
-        guard let store = try? NoteStore(folder: folder) else {
+        guard let store = makeStore(folder: folder, settings: settings) else {
             presentFolderFailure(folder)
             return
         }
         settings.notesFolder = folder
         self.store = store
 
-        if store.notes.isEmpty {
-            _ = try? store.addNote(named: String(localized: "Notiz"))
+        let settingsWindowController = SettingsWindowController(settings: settings) { [weak self] url in
+            self?.changeNotesFolder(to: url)
         }
-        settings.activeNoteName = settings.activeNoteName ?? store.notes.first?.name
+        self.settingsWindowController = settingsWindowController
 
-        let panelController = PanelController(store: store, settings: settings)
+        let panelController = PanelController(store: store, settings: settings) {
+            settingsWindowController.show()
+        }
         self.panelController = panelController
-        menuBarController = MenuBarController { panelController.toggle() }
+
+        menuBarController = MenuBarController(
+            onToggle: { panelController.toggle() },
+            onOpenSettings: { settingsWindowController.show() }
+        )
 
         KeyboardShortcuts.onKeyUp(for: .togglePanel) { panelController.toggle() }
 
@@ -46,6 +53,40 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         store?.flush()
     }
+
+    // MARK: - Notes folder
+
+    /// Builds a store and makes sure the user always has at least one note to
+    /// type into - an empty scratchpad with no tab would be a dead end.
+    private func makeStore(folder: URL, settings: AppSettings) -> NoteStore? {
+        guard let store = try? NoteStore(folder: folder) else { return nil }
+        store.preferredOrder = settings.noteOrder
+        if store.notes.isEmpty {
+            _ = try? store.addNote(named: String(localized: "Notiz"))
+        }
+        settings.noteOrder = store.preferredOrder
+        let names = Set(store.notes.map(\.name))
+        if let active = settings.activeNoteName, names.contains(active) {
+            // keep it
+        } else {
+            settings.activeNoteName = store.notes.first?.name
+        }
+        return store
+    }
+
+    private func changeNotesFolder(to url: URL) {
+        guard let settings, let panelController else { return }
+        settings.noteOrder = []
+        settings.activeNoteName = nil
+        guard let newStore = makeStore(folder: url, settings: settings) else {
+            presentFolderFailure(url)
+            return
+        }
+        store = newStore
+        panelController.replaceStore(newStore)
+    }
+
+    // MARK: - Pin
 
     /// The pin toggle lives in SwiftUI; the window level does not. Observation
     /// re-arms itself after every change.
@@ -66,6 +107,5 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         alert.informativeText = folder.path(percentEncoded: false)
         alert.alertStyle = .critical
         alert.runModal()
-        NSApp.terminate(nil)
     }
 }

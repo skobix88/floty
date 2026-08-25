@@ -7,9 +7,11 @@ final class MenuBarController {
 
     private let statusItem: NSStatusItem
     private let onToggle: () -> Void
+    private let onOpenSettings: () -> Void
 
-    init(onToggle: @escaping () -> Void) {
+    init(onToggle: @escaping () -> Void, onOpenSettings: @escaping () -> Void) {
         self.onToggle = onToggle
+        self.onOpenSettings = onOpenSettings
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem.button {
@@ -36,6 +38,9 @@ final class MenuBarController {
         menu.addItem(withTitle: String(localized: "Floty öffnen"),
                      action: #selector(toggleFromMenu), keyEquivalent: "")
             .target = self
+        menu.addItem(withTitle: String(localized: "Einstellungen …"),
+                     action: #selector(openSettingsFromMenu), keyEquivalent: ",")
+            .target = self
         menu.addItem(.separator())
         menu.addItem(withTitle: String(localized: "Floty beenden"),
                      action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
@@ -48,4 +53,6 @@ final class MenuBarController {
     }
 
     @objc private func toggleFromMenu() { onToggle() }
+
+    @objc private func openSettingsFromMenu() { onOpenSettings() }
 }
