@@ -1,0 +1,159 @@
+# Floty — Anforderungen
+
+**Untertitel:** *your floating notes* · **Kurzform:** Floty — quick thoughts
+
+## 0. Grundidee
+
+Floty ist eine leichte, kleine und unaufdringliche macOS-Anwendung, mit der sich
+schnell Gedanken, Textideen, Notizen und kurze Textschnipsel festhalten lassen.
+
+Sie soll sich bewusst nicht wie eine klassische Notiz-App anfühlen, sondern wie
+ein **digitaler Schmierzettel**, der jederzeit schnell erreichbar ist.
+
+> Floty soll nicht im Weg sein. Es soll einfach da sein, wenn ein Gedanke schnell
+> aufgeschrieben werden muss.
+
+Design-Referenz: [Panel](docs/panel.png) und [Einstellungen](docs/einstellungen.png).
+
+Zielplattform: **macOS 26** und neuer, Apple Silicon und Intel.
+
+---
+
+## 1. Fenster und Bedienung
+
+- Ein einzelnes schwebendes Panel, frei verschiebbar, per Ziehen in der Größe
+  veränderbar. Position und Größe überleben Neustarts.
+- Leicht transparent, Transparenz stufenlos einstellbar von durchscheinend bis
+  deckend. Die Untergrenze ist so gesetzt, dass Text lesbar bleibt.
+- Feste dunkle, neutrale/graue Farbgebung.
+- **Pin-Knopf** oben rechts löst den Widerspruch zwischen „immer im Vordergrund"
+  und „beim Klick außerhalb schließen":
+  - *ungepinnt* — das Panel blendet sich aus, sobald woanders hingeklickt wird
+  - *gepinnt* — das Panel bleibt über allen anderen Anwendungen sichtbar
+- Beim Tippen bleibt die darunterliegende Anwendung aktiv (nonactivating Panel).
+- Kein Dock-Symbol, kein Eintrag in Cmd-Tab.
+
+## 2. Menüleiste und Startverhalten
+
+Floty lebt in der macOS-Menüleiste.
+
+- Klick auf das Menüleisten-Icon blendet das Panel ein und aus.
+- Einstellbarer globaler Hotkey für dieselbe Aktion (Vorgabe wie im Screenshot: ⌃⌥⌘N).
+- Einstellungen über das Menüleisten-Icon erreichbar.
+- Optionaler Start bei macOS-Login.
+
+## 3. Schreiben und Formatierung
+
+Der Editor zeigt **Markdown mit Live-Styling**: die Marker bleiben als blasser
+Text im Dokument stehen, werden aber gleichzeitig angewendet — `**fett**`
+erscheint fett, die Sternchen bleiben sichtbar. Damit ist die Datei exakt das,
+was auf dem Bildschirm steht; es gibt keine verlustbehaftete Umwandlung.
+
+Quick Formatting per Shortcut auf der Auswahl:
+
+| Format | Shortcut | Markdown |
+|---|---|---|
+| Fett | ⌘B | `**Text**` |
+| Kursiv | ⌘I | `*Text*` |
+| Durchgestrichen | ⌘⇧X | `~~Text~~` |
+| Checkbox | ⌘⇧L | `- [ ] ` |
+
+Durchstreichen muss auch unabhängig von Checkboxen möglich sein.
+
+## 4. Aufzählungen und Checklisten
+
+- **Nummerierte Listen:** Enter nach `1. Erster Punkt` erzeugt `2. `.
+  Enter auf einer leeren Listenzeile beendet die Liste, statt sie fortzusetzen.
+- **Checkboxen:** Enter nach `- [ ] Aufgabe` erzeugt eine neue `- [ ] `-Zeile.
+- **Darstellung:** `- [ ]` und `- [x]` werden als anklickbares ☐ / ☑ gezeichnet.
+  Das ist die einzige Ausnahme von der Regel „Marker bleiben sichtbar" — ein
+  Kästchen muss klickbar sein.
+- Ist eine Checkbox aktiviert, wird der Text dahinter automatisch durchgestrichen
+  dargestellt. Diese Durchstreichung ist reine Darstellung und steht nicht als
+  `~~` in der Datei.
+- **In der Datei** steht immer Standard-Markdown `- [ ]` / `- [x]`, nie Unicode-
+  Zeichen. Nur so erkennt Obsidian echte Aufgaben und GitHub rendert sie.
+
+## 5. Tabs
+
+Eine Floty-Instanz enthält mehrere Notizen als Tabs. Ein Tab entspricht genau
+einer `.md`-Datei; der Tabname ist der Dateiname.
+
+- Neue Notiz per `+` hinzufügen
+- Tab umbenennen (benennt die Datei um)
+- Tab löschen (in den Papierkorb, nicht endgültig)
+- Zwischen Notizen wechseln
+
+Reihenfolge und zuletzt aktiver Tab werden gerätelokal gemerkt, nicht im
+Notizordner abgelegt.
+
+## 6. Speichern, Export, Teilen
+
+- **Speichern** geschieht automatisch: entprellt nach der letzten Taste und beim
+  Ausblenden des Panels. Kein Speichern-Knopf.
+- **Ablageort:** ein vom Nutzer gewählter Ordner, vorgeschlagen wird ein Ordner
+  in iCloud Drive. Die Dateien sind im Finder sichtbar und mit jedem beliebigen
+  Editor lesbar.
+- **Kopieren:** gesamter Notiztext in die Zwischenablage.
+- **Vorschau:** Umschalten zwischen Editor und gerenderter Markdown-Ansicht.
+- **Export** als `.md` an einen beliebigen Ort.
+- **Teilen** über das macOS Share Sheet.
+
+## 7. Synchronisation
+
+Die Notizen liegen in einem iCloud-Drive-Ordner; die Synchronisation übernimmt
+macOS. Floty selbst synchronisiert nicht und geht nie ins Netz.
+
+Damit ist Floty auf mehreren eigenen Macs nutzbar. Legt iCloud Drive bei einem
+Konflikt eine zweite Datei an, taucht sie in Floty als zusätzlicher Tab auf.
+
+## 8. Obsidian
+
+Ziel: **Floty zum schnellen Erfassen → Obsidian zur dauerhaften Ablage.**
+
+„An Obsidian übergeben" schreibt die Notiz als `.md` in einen in den
+Einstellungen festgelegten Vault-Ordner und ruft anschließend `obsidian://open`
+auf. Danach wird angeboten, den Tab zu schließen — der Gedanke ist
+weitergereicht und hier erledigt.
+
+## 9. Einstellungen
+
+**Fenster:** Transparenz · Standardgröße · Pin-Verhalten
+**Verhalten:** Start bei Login · globaler Hotkey · beim Klick außerhalb schließen
+**Ablage:** Notizordner · Obsidian-Vault-Ordner
+**Sprache:** folgt der Systemsprache (Deutsch und Englisch)
+
+## 10. Icon
+
+Ausgangspunkt ist die [SVG-Vorlage](https://www.svgviewer.dev/s/ScaiYQHQ). Das
+Icon soll sich in das macOS-Design einfügen und den leichten, minimalistischen
+Charakter unterstützen.
+
+## 11. Veröffentlichung, Versionierung, Verteilung
+
+- Öffentliches GitHub-Repository mit Quellcode, README, Dokumentation der
+  wichtigsten Funktionen und Release-Historie.
+- Fertige App-Versionen als `.dmg` über GitHub Releases.
+- **Semantic Versioning** `MAJOR.MINOR.PATCH`, Vorabversionen als
+  `1.0.0-beta.1` / `1.0.0-rc.1`.
+- Release-Ablauf: entwickeln → Version setzen → CHANGELOG → Git-Tag →
+  GitHub Release → `.dmg` anhängen.
+- **Signierung:** zunächst ad-hoc, ohne bezahlten Developer-Account. Auf einem
+  zweiten eigenen Mac einmal pro Version über Rechtsklick → Öffnen freigeben.
+  Der Release-Ablauf ist so gebaut, dass Developer ID und Notarisierung später
+  ohne Umbau ergänzt werden können.
+
+---
+
+## Design-Ziel
+
+Floty soll sich anfühlen wie: klein, schnell, leicht, unaufdringlich,
+minimalistisch, immer verfügbar — und ausdrücklich nicht wie ein überladenes
+Notizprogramm.
+
+---
+
+## Nicht in 1.0
+
+Siehe [TODO.md](TODO.md): automatisches Leeren nach X Tagen, Volltextsuche über
+alle Tabs, Hell-/Dunkelmodus, Developer ID + Notarisierung, automatische Updates.

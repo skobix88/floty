@@ -1,0 +1,84 @@
+name: Floty
+
+options:
+  bundleIdPrefix: de.blackforeststuff
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_STRICT_CONCURRENCY: complete
+    # Vorerst ad-hoc signiert, siehe ANFORDERUNGEN.md Abschnitt 11.
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    DEVELOPMENT_TEAM: ""
+    ENABLE_HARDENED_RUNTIME: YES
+
+packages:
+  KeyboardShortcuts:
+    url: https://github.com/sindresorhus/KeyboardShortcuts
+    from: "2.2.0"
+
+targets:
+  Floty:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/Floty
+    dependencies:
+      - package: KeyboardShortcuts
+    info:
+      path: Sources/Floty/Resources/Info.plist
+      properties:
+        CFBundleName: Floty
+        CFBundleDisplayName: Floty
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        # Kein Dock-Symbol, kein Cmd-Tab.
+        LSUIElement: true
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSPrincipalClass: NSApplication
+        NSHumanReadableCopyright: "Tobi Kleis"
+        # Floty geht nie ins Netz; App Transport Security bleibt Standard.
+    entitlements:
+      path: Sources/Floty/Resources/Floty.entitlements
+      properties:
+        # Kein App Sandbox - Floty ist nicht fuer den App Store gedacht.
+        com.apple.security.app-sandbox: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.blackforeststuff.Floty
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+
+  FlotyTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/FlotyTests
+    dependencies:
+      - target: Floty
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: de.blackforeststuff.FlotyTests
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  Floty:
+    build:
+      targets:
+        Floty: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      # Sperre gegen Schreiben in den echten Notizordner, siehe CLAUDE.md Regel 6.
+      environmentVariables:
+        FLOTY_TESTING: "1"
+      targets:
+        - FlotyTests

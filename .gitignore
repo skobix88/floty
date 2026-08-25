@@ -1,0 +1,19 @@
+# Von XcodeGen erzeugt — Quelle der Wahrheit ist project.yml
+*.xcodeproj
+
+# Build
+DerivedData/
+build/
+*.dmg
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Von XcodeGen aus project.yml erzeugt
+Sources/Floty/Resources/Info.plist
+Sources/Floty/Resources/Floty.entitlements
