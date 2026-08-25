@@ -197,6 +197,33 @@ der Nutzer nicht schaut. `NSScreen.main` taugt ebenfalls nicht, das bedeutet
 „hat das Tastaturfenster". Genommen wird `NSScreen.screens[0]`, der Bildschirm
 mit der Menüleiste — dort, wo eine Menüleisten-App hingehört.
 
+### Ausblenden bei Klick außerhalb: die Entscheidung muss warten
+
+Im Betrieb wirkte das Löschen kaputt: Klick auf den Papierkorb, und statt der
+Rückfrage verschwand das ganze Panel. Ursache ist die Kombination aus
+nonactivating Panel und Rückfrage-Sheet. Sobald das Sheet aufgeht, verliert das
+Panel den Tastaturfokus, `windowDidResignKey` feuert — und Floty blendete sich
+aus, mitsamt der Rückfrage.
+
+Der naheliegende Riegel `panel.attachedSheet == nil` direkt in `windowDidResignKey`
+hilft nicht: in einem Kontrollversuch meldet das Panel in genau diesem Moment
+noch `attachedSheet == false`. Der Fokuswechsel ist erst im nächsten
+Durchlauf der Ereignisschleife abgeschlossen. Die Entscheidung wird deshalb um
+einen Durchlauf verschoben und trifft dann drei Bedingungen an: kein Sheet am
+Panel, kein anderes eigenes Fenster mit Fokus (Einstellungen, Menüs), und das
+Panel ist noch sichtbar. Beides ist mit einem eigenständigen Versuchsprogramm
+vorher und nachher nachgestellt worden.
+
+Derselbe Fehler hätte auch das Einstellungsfenster und die Tab-Menüs getroffen.
+
+### Löschen soll nicht stillschweigend nichts tun
+
+`try?` beim Löschen hat den Fehlerfall verschluckt. Jetzt wird er angezeigt.
+Nebenbei belegt: `FileManager.trashItem` arbeitet auch in iCloud Drive korrekt —
+die Datei landet in `~/Library/Mobile Documents/.Trash/`, nicht im Papierkorb des
+Benutzerordners. Beim Suchen an der falschen Stelle sieht das wie Datenverlust
+aus, ist aber keiner.
+
 ### Ad-hoc-Signierung schaltet Hardened Runtime ab
 
 `ENABLE_HARDENED_RUNTIME: YES` steht in `project.yml`, Xcode meldet beim Bauen
@@ -224,7 +251,7 @@ laufen, sonst ist die Untergrenze neu zu entscheiden.
 
 ## Prüfung
 
-**62 Prüfungen in 9 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
+**67 Prüfungen in 10 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
 Das Testschema setzt `FLOTY_TESTING=1`; `NoteStore` nimmt dann nur noch Ordner
 unterhalb des Temp-Verzeichnisses an, und der `AppDelegate` überspringt beim
 Start seine gesamte Einrichtung — sonst würde der Test-Host den echten
@@ -240,6 +267,7 @@ Notizordner öffnen.
 | Fensterplatzierung | Standardposition, fehlende gemerkte Position, sichtbare Position bleibt, zweiter Bildschirm bleibt, abgezogener Bildschirm holt zurück, knappe Überlappung, leerer Rahmen |
 | Tab-Reihenfolge | gemerkte Reihenfolge gewinnt, Unbekanntes hinten, verschwundene Namen stören nicht, natürliche Sortierung, Verschieben, Anschläge |
 | Vorschau | Marker verschwinden, Formatierung bleibt, Überschriften, Aufgaben mit Durchstreichung, Aufzählungen, mehrere Zeilen, Formatierung in Aufgaben, unvollständige Marker, leerer Text |
+| Aktiver Tab nach dem Löschen | Hintergrund-Tab verschiebt den Nutzer nicht, Nachbar rückt nach, letzter Tab, nichts mehr übrig, verschwundener aktiver Tab |
 | Notizablage | Testordner-Sperre, Schreiben/Wiedereinlesen, unveränderte Datei bleibt unangetastet, Umbenennen, Namenskonflikte, Schrägstriche im Namen, Papierkorb statt Löschen, Fremddatei wird Tab, Nicht-Markdown wird ignoriert |
 
 ### Was noch nicht belegt ist
@@ -256,7 +284,8 @@ für das Terminal:
 
 1. Wie das gezeichnete Kästchen und die Abstände tatsächlich aussehen
 2. Hotkey aus einer Vollbild-App heraus, ohne die darunterliegende App zu deaktivieren
-3. Ausblenden bei Klick außerhalb
+3. Ausblenden bei Klick außerhalb — die Regel ist mit einem Versuchsprogramm
+   nachgestellt, das Zusammenspiel mit einem echten Klick in eine andere App nicht
 4. Transparenzstufen und Lesbarkeit
 5. Wie gut das Menüleisten-Symbol bei sehr voller Leiste auffindbar ist — es
    wird nachweislich gesetzt (x≈247, 32×30 pt), die Platzierung entscheidet aber

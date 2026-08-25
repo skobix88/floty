@@ -10,6 +10,7 @@ struct PanelView: View {
 
     @State private var showsPreview = false
     @State private var noteToDelete: NoteFile?
+    @State private var errorMessage: String?
 
     private var activeNote: NoteFile? {
         if let name = settings.activeNoteName,
@@ -46,6 +47,14 @@ struct PanelView: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .preferredColorScheme(.dark)
+        .alert(
+            String(localized: "Die Notiz ließ sich nicht in den Papierkorb legen."),
+            isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
+        ) {
+            Button(String(localized: "Abbrechen"), role: .cancel) { errorMessage = nil }
+        } message: {
+            Text(errorMessage ?? "")
+        }
         .confirmationDialog(
             String(localized: "Notiz in den Papierkorb legen?"),
             isPresented: Binding(get: { noteToDelete != nil }, set: { if !$0 { noteToDelete = nil } }),
@@ -135,8 +144,21 @@ struct PanelView: View {
 
     private func delete(_ note: NoteFile) {
         noteToDelete = nil
-        try? store.moveToTrash(note.id)
+        let index = store.notes.firstIndex(where: { $0.id == note.id }) ?? 0
+        do {
+            try store.moveToTrash(note.id)
+        } catch {
+            // Never swallow this: a delete that quietly does nothing is worse
+            // than one that fails loudly.
+            errorMessage = error.localizedDescription
+            return
+        }
         settings.noteOrder = store.preferredOrder
-        settings.activeNoteName = store.notes.first?.name
+        settings.activeNoteName = ActiveNote.afterDeletion(
+            of: note.name,
+            at: index,
+            remaining: store.notes.map(\.name),
+            current: settings.activeNoteName
+        )
     }
 }

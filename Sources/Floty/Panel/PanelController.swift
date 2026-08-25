@@ -90,6 +90,22 @@ final class PanelController: NSObject, NSWindowDelegate {
 
     func windowDidResignKey(_ notification: Notification) {
         guard settings.hidesOnClickOutside, !settings.isPinned else { return }
+        // The focus change is not finished yet: a sheet is not attached to the
+        // panel at this instant, and a window of ours that is taking over is
+        // not key yet. Deciding now would hide the panel the moment a
+        // confirmation dialog opens - taking the dialog down with it.
+        Task { @MainActor [weak self] in
+            self?.hideIfTheUserLeft()
+        }
+    }
+
+    /// Hide only when the focus really went to another application - not to a
+    /// sheet on the panel, a menu, or Floty's own settings window.
+    private func hideIfTheUserLeft() {
+        guard let panel, panel.isVisible else { return }
+        guard settings.hidesOnClickOutside, !settings.isPinned else { return }
+        guard panel.attachedSheet == nil else { return }
+        if let key = NSApp.keyWindow, key !== panel { return }
         hide()
     }
 

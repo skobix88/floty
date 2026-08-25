@@ -27,3 +27,9 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   machte das Panel unerreichbar. Position wird vor dem Anzeigen geprüft.
 - Das Panel öffnete auf einem zweiten Display statt auf dem Bildschirm mit der
   Menüleiste.
+- Beim Löschen verschwand das Panel samt Rückfrage, statt zu fragen. Das
+  Ausblenden bei Fokusverlust prüft jetzt einen Durchlauf später, ob der Fokus
+  wirklich zu einer anderen Anwendung gegangen ist.
+- Ein fehlgeschlagenes Löschen blieb unsichtbar; es wird jetzt gemeldet.
+- Eine Notiz im Hintergrund zu löschen sprang zum ersten Tab.
+- Ein angefangenes Umbenennen blieb hängen, wenn man daneben klickte.

@@ -64,6 +64,11 @@ struct TabBarView: View {
                 .onSubmit(commitRename)
                 .onExitCommand { renamingID = nil }
                 .onAppear { nameFieldFocused = true }
+                // Clicking somewhere else has to end the rename too, otherwise
+                // the chip stays a text field and the tab looks broken.
+                .onChange(of: nameFieldFocused) { wasFocused, isFocused in
+                    if wasFocused && !isFocused { commitRename() }
+                }
         } else {
             Text(note.name)
                 .font(.system(size: 13, weight: .medium))
