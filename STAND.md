@@ -2,7 +2,7 @@
 
 Was gebaut ist, wie es geprüft wurde, und warum es so entschieden wurde.
 
-**Stand: 25.08.2026 — M1 und M2 gebaut, 62 Prüfungen laufen durch.**
+**Stand: 25.08.2026 — M1 und M2 gebaut, 67 Prüfungen laufen durch.**
 
 ---
 
