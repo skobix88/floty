@@ -34,3 +34,38 @@ struct PanelTintTests {
         }
     }
 }
+
+@Suite("Farbton in der Fläche")
+struct PanelTintSurfaceTests {
+
+    /// Der Farbton liegt jetzt volldeckend unter dem Regler, statt mit dessen
+    /// Deckkraft über dem Weichzeichner zu liegen. Bei voller Deckkraft muss
+    /// die Fläche deshalb exakt der eingestellte Ton sein.
+    private func srgb(_ color: Color) -> NSColor {
+        NSColor(color).usingColorSpace(.sRGB) ?? .black
+    }
+
+    @Test("Die beiden Farbtöne unterscheiden sich messbar")
+    func distinguishable() {
+        let neutral = srgb(PanelTint.neutral.base)
+        let midnight = srgb(PanelTint.midnight.base)
+        let blueDelta = (midnight.blueComponent - neutral.blueComponent) * 255
+        #expect(blueDelta > 12, "Blauanteil unterscheidet sich nur um \(blueDelta)")
+    }
+
+    @Test("Mitternachtsblau ist blaustichig, Neutralgrau nicht")
+    func hue() {
+        let midnight = srgb(PanelTint.midnight.base)
+        #expect(midnight.blueComponent > midnight.redComponent)
+
+        let neutral = srgb(PanelTint.neutral.base)
+        #expect(abs(neutral.blueComponent - neutral.redComponent) < 0.01)
+    }
+
+    @Test("Der Regler lässt deutlich mehr Transparenz zu als früher")
+    @MainActor
+    func opacityRange() {
+        #expect(AppSettings.minimumOpacity < 0.15)
+        #expect(AppSettings.minimumOpacity > 0, "ganz unsichtbar wäre nicht bedienbar")
+    }
+}

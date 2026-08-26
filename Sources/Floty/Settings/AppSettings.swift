@@ -21,9 +21,9 @@ final class AppSettings {
         static let tint = "tint"
     }
 
-    /// How far the slider may go towards transparent. The blurred backdrop
-    /// underneath keeps the text readable even at the low end.
-    static let minimumOpacity: Double = 0.22
+    /// How far the slider may go towards transparent. Only the backdrop fades,
+    /// never the text, so even the low end stays readable.
+    static let minimumOpacity: Double = 0.08
 
     @ObservationIgnored private let defaults: UserDefaults
 

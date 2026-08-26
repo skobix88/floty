@@ -41,10 +41,18 @@ struct PanelView: View {
             )
         }
         .background {
+            // Der Farbton deckt voll; durchsichtig wird die ganze Fläche.
+            //
+            // Vorher lag der Farbton als Platte mit der Deckkraft des Reglers
+            // über dem Weichzeichner. Dessen Grau schien dann durch und wusch
+            // den Ton aus - je durchscheinender, desto grauer. Jetzt steuert
+            // der Regler Weichzeichner und Farbton gemeinsam: der Farbton
+            // bleibt bei jeder Stufe genau der eingestellte.
             ZStack {
                 VisualEffectBackground()
-                settings.tint.base.opacity(settings.panelOpacity)
+                settings.tint.base
             }
+            .opacity(settings.panelOpacity)
             .ignoresSafeArea()
         }
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))

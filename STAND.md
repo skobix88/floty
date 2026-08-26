@@ -2,7 +2,7 @@
 
 Was gebaut ist, wie es geprüft wurde, und warum es so entschieden wurde.
 
-**Stand: 26.08.2026 — M1 bis M4 gebaut, 87 Prüfungen laufen durch, 1.0.0-rc.1 gepackt.**
+**Stand: 26.08.2026 — M1 bis M4 gebaut, 90 Prüfungen laufen durch, 1.0.0-rc.1 gepackt.**
 
 ---
 
@@ -274,6 +274,27 @@ was man einmal im Jahr braucht; die Einstellungen erreicht man jetzt über das
 Menüleisten-Menü. Damit der gewohnte Kurzbefehl nicht verschwindet, fängt
 `FlotyPanel` ⌘, selbst ab — ohne Hauptmenü gäbe es ihn sonst gar nicht.
 
+### Der Farbton liegt unter dem Regler, nicht darüber
+
+Erster Anlauf: der Farbton lag als Platte mit der Deckkraft des Reglers über
+dem Weichzeichner. Dessen Grau schien dann durch und wusch den Ton aus — je
+durchscheinender eingestellt, desto grauer die Fläche. Ausgerechnet dort, wo
+der Ton wirken soll, verschwand er. An den Registerkarten fiel es nicht auf,
+weil die eine volldeckende, kräftigere Farbe tragen.
+
+Jetzt deckt der Farbton voll, und der Regler nimmt Weichzeichner und Farbton
+gemeinsam zurück. Die Fläche trägt damit auf jeder Stufe genau den
+eingestellten Ton; durchscheinend heißt jetzt „der Schreibtisch scheint durch",
+nicht „Grau mischt sich dazu".
+
+Dazu das Material: `.underWindowBackground` statt `.hudWindow`. Letzteres
+zeichnet ein recht helles Grau und zieht jeden Farbton Richtung neutral.
+
+Bleibt eine Einschränkung, die keine Technik wegnimmt: `#171E30` unterscheidet
+sich vom Neutralgrau `#1F1F1F` im Wesentlichen um 17 Stufen im Blaukanal. Das
+liest sich als „fast schwarz mit Blaustich", nicht als Blau. Wer es deutlicher
+will, hebt den Wert an — es ist eine Zahl in `PanelTint`.
+
 ### Zwei Farbfamilien statt einer
 
 Das vereinbarte Neutralgrau wirkte im Betrieb flach. Es gibt jetzt zusätzlich
@@ -337,7 +358,7 @@ laufen, sonst ist die Untergrenze neu zu entscheiden.
 
 ## Prüfung
 
-**87 Prüfungen in 14 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
+**90 Prüfungen in 15 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
 Das Testschema setzt `FLOTY_TESTING=1`; `NoteStore` nimmt dann nur noch Ordner
 unterhalb des Temp-Verzeichnisses an, und der `AppDelegate` überspringt beim
 Start seine gesamte Einrichtung — sonst würde der Test-Host den echten
