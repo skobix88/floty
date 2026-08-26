@@ -2,7 +2,7 @@
 
 Was gebaut ist, wie es geprüft wurde, und warum es so entschieden wurde.
 
-**Stand: 26.08.2026 — M1 bis M3 gebaut, 79 Prüfungen laufen durch.**
+**Stand: 26.08.2026 — M1 bis M4 gebaut, 87 Prüfungen laufen durch, 1.0.0-rc.1 gepackt.**
 
 ---
 
@@ -55,9 +55,18 @@ belegt ist" weiter unten.
 | App-Icon aus der SVG-Vorlage, reproduzierbar erzeugt | `scripts/make-icon.swift` | im gebauten Bündel nachgewiesen (`AppIcon.icns`), Optik angesehen |
 | Menüleisten-Symbol aus derselben Vorlage, als Schablone | `Resources/Assets.xcassets/MenuBarIcon.imageset` | automatisiert geprüft (liegt im Bündel, ist Schablone) |
 
-### M4 — Es wird verteilt · offen
+### M4 — Es wird verteilt · gebaut, Veröffentlichung ausstehend
 
-GitHub-Repo, README, `scripts/release.sh`, `.dmg`, Semantic Versioning → 1.0.0.
+| Baustein | Datei | Stand |
+|---|---|---|
+| MIT-Lizenz | `LICENSE` | liegt bei |
+| Release-Ablauf: prüfen, bauen, `.dmg` packen | `scripts/release.sh` | ausgeführt, Abbild eingehängt und geprüft |
+| Semantic Versioning mit Vorabkennzeichnung | `App/AppVersion.swift`, `project.yml` | automatisiert geprüft |
+| Version im Einstellungsfenster | `Settings/SettingsView.swift` | gebaut, nur kompiliert |
+
+**Offen:** GitHub-Repository `skobix88/floty` anlegen und den ersten Push. Das
+geschieht erst auf ausdrückliche Anweisung — ein öffentliches Repository lässt
+sich nicht still zurücknehmen.
 
 ---
 
@@ -253,6 +262,30 @@ Eigenschaften über `UserDefaults`. `@Observable` verfolgt aber nur gespeicherte
 Eigenschaften — das Einstellungsfenster hätte den neuen Ordner selbst dann nicht
 angezeigt, wenn das Lesezeichen funktioniert hätte.
 
+### Einstellungen wandern in die Menüleiste
+
+Das Zahnrad im Panelkopf ist entfallen. Ein Schmierzettel soll nichts zeigen,
+was man einmal im Jahr braucht; die Einstellungen erreicht man jetzt über das
+Menüleisten-Menü. Damit der gewohnte Kurzbefehl nicht verschwindet, fängt
+`FlotyPanel` ⌘, selbst ab — ohne Hauptmenü gäbe es ihn sonst gar nicht.
+
+### Zwei Farbfamilien statt einer
+
+Das vereinbarte Neutralgrau wirkte im Betrieb flach. Es gibt jetzt zusätzlich
+Mitternachtsblau `#171E30`, umschaltbar in den Einstellungen. Beide bleiben
+dunkel; ein Hell-Modus steht weiterhin nicht zur Debatte. Feste Regel 5 in
+`CLAUDE.md` ist entsprechend berichtigt — die Absprache dafür hat stattgefunden.
+
+Die Farben liegen gebündelt in `Panel/PanelTint.swift`. Ein Test wacht darüber,
+dass Mitternachtsblau wirklich `#171E30` ist und beide Familien dunkel bleiben.
+
+### Vorabkennzeichnung getrennt von der Versionsnummer
+
+`CFBundleShortVersionString` muss rein numerisch bleiben, sonst stolpert die
+Notarisierung später über `1.0.0-rc.1`. Die Marketing-Nummer bleibt deshalb
+`1.0.0`, das `rc.1` steht in einem eigenen Schlüssel und wird nur für Anzeige
+und Git-Tag angehängt. Ein Test hält die Marketing-Nummer numerisch.
+
 ### Das Icon wird erzeugt, nicht abgelegt
 
 `scripts/make-icon.swift` rendert den Symbolsatz aus `Resources/AppIcon.svg`.
@@ -299,7 +332,7 @@ laufen, sonst ist die Untergrenze neu zu entscheiden.
 
 ## Prüfung
 
-**79 Prüfungen in 12 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
+**87 Prüfungen in 14 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
 Das Testschema setzt `FLOTY_TESTING=1`; `NoteStore` nimmt dann nur noch Ordner
 unterhalb des Temp-Verzeichnisses an, und der `AppDelegate` überspringt beim
 Start seine gesamte Einrichtung — sonst würde der Test-Host den echten
@@ -315,6 +348,8 @@ Notizordner öffnen.
 | Fensterplatzierung | Standardposition, fehlende gemerkte Position, sichtbare Position bleibt, zweiter Bildschirm bleibt, abgezogener Bildschirm holt zurück, knappe Überlappung, leerer Rahmen |
 | Tab-Reihenfolge | gemerkte Reihenfolge gewinnt, Unbekanntes hinten, verschwundene Namen stören nicht, natürliche Sortierung, Verschieben, Anschläge |
 | Vorschau | Marker verschwinden, Formatierung bleibt, Überschriften, Aufgaben mit Durchstreichung, Aufzählungen, mehrere Zeilen, Formatierung in Aufgaben, unvollständige Marker, leerer Text |
+| Version | ohne und mit Vorabkennzeichnung, Marketing-Nummer bleibt numerisch, Anzeigeform |
+| Farbton | beide Töne merkbar, unbekannter Wert fällt zurück, Mitternachtsblau ist #171E30, beide bleiben dunkel |
 | Ordner merken | Lesezeichen anlegen und auflösen, überlebt Umbenennen, kaputte Daten ergeben nil, Menüleisten-Symbol liegt im Bündel |
 | Obsidian-Übergabe | freier Name, vorhandene Vault-Notiz wird nie überschrieben, Hochzählen, Schrägstriche, Rückfallname, URL-Kodierung, fehlender Vault, echtes Schreiben in einen Testordner |
 | Aktiver Tab nach dem Löschen | Hintergrund-Tab verschiebt den Nutzer nicht, Nachbar rückt nach, letzter Tab, nichts mehr übrig, verschwundener aktiver Tab |

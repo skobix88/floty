@@ -67,7 +67,8 @@ Tests/FlotyTests · scripts/release.sh · project.yml
 3. Floty geht nie ins Netz und meldet nichts nach außen.
 4. Notizordner, Vault-Ordner, Fensterposition, Größe, Transparenz und Hotkey
    überleben jede Aktualisierung.
-5. Feste dunkle, neutrale Farbgebung. Kein Hell-Modus ohne Absprache.
+5. Immer dunkel. Zwei Farbfamilien zur Wahl (`PanelTint`): Neutralgrau und
+   Mitternachtsblau `#171E30`. Kein Hell-Modus ohne Absprache.
 6. Jede Prüfung ist eine dauerhafte Datei in `Tests/FlotyTests/`, nie ein
    Wegwerfprogramm in `/tmp` oder im Chat. Tests schreiben nie in den echten
    Notizordner: `NoteStore` verweigert ihn, wenn `FLOTY_TESTING=1` gesetzt ist.

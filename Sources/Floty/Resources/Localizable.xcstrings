@@ -78,6 +78,17 @@
         }
       }
     },
+    "Darstellung": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        }
+      }
+    },
     "Das hat nicht geklappt.": {
       "extractionState": "manual",
       "localizations": {
@@ -133,17 +144,6 @@
         }
       }
     },
-    "Einstellungen": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
-          }
-        }
-      }
-    },
     "Einstellungen …": {
       "extractionState": "manual",
       "localizations": {
@@ -162,6 +162,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "No Obsidian vault has been chosen yet. You set that under “Storage” in Settings."
+          }
+        }
+      }
+    },
+    "Farbton": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colour"
           }
         }
       }
@@ -303,6 +314,17 @@
         }
       }
     },
+    "Mitternachtsblau": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Midnight blue"
+          }
+        }
+      }
+    },
     "Nach links": {
       "extractionState": "manual",
       "localizations": {
@@ -332,6 +354,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "New note"
+          }
+        }
+      }
+    },
+    "Neutralgrau": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neutral grey"
           }
         }
       }
@@ -486,6 +519,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Behaviour"
+          }
+        }
+      }
+    },
+    "Version": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
           }
         }
       }

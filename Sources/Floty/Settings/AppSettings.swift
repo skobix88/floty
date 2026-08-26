@@ -18,6 +18,7 @@ final class AppSettings {
         static let panelFrame = "panelFrame"
         static let activeNoteName = "activeNoteName"
         static let noteOrder = "noteOrder"
+        static let tint = "tint"
     }
 
     /// How far the slider may go towards transparent. The blurred backdrop
@@ -28,6 +29,7 @@ final class AppSettings {
 
     var panelOpacity: Double { didSet { defaults.set(panelOpacity, forKey: Key.panelOpacity) } }
     var isPinned: Bool { didSet { defaults.set(isPinned, forKey: Key.isPinned) } }
+    var tint: PanelTint { didSet { defaults.set(tint.rawValue, forKey: Key.tint) } }
     var hidesOnClickOutside: Bool { didSet { defaults.set(hidesOnClickOutside, forKey: Key.hidesOnClickOutside) } }
     var activeNoteName: String? { didSet { defaults.set(activeNoteName, forKey: Key.activeNoteName) } }
     /// Tab order by note name. Device local on purpose: the notes folder stays
@@ -50,6 +52,7 @@ final class AppSettings {
         let storedOpacity = defaults.object(forKey: Key.panelOpacity) as? Double
         panelOpacity = storedOpacity ?? 0.85
         isPinned = defaults.bool(forKey: Key.isPinned)
+        tint = PanelTint(rawValue: defaults.string(forKey: Key.tint) ?? "") ?? .neutral
         hidesOnClickOutside = defaults.object(forKey: Key.hidesOnClickOutside) as? Bool ?? true
         activeNoteName = defaults.string(forKey: Key.activeNoteName)
         noteOrder = defaults.stringArray(forKey: Key.noteOrder) ?? []

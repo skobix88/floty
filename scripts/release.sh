@@ -13,8 +13,10 @@ PUBLISH=${1:-}
 
 command -v xcodegen >/dev/null || { echo "xcodegen fehlt: brew install xcodegen"; exit 1; }
 
-VERSION=$(awk -F'"' '/MARKETING_VERSION:/{print $2}' project.yml)
-[ -n "$VERSION" ] || { echo "MARKETING_VERSION nicht in project.yml gefunden"; exit 1; }
+MARKETING=$(awk -F'"' '/MARKETING_VERSION:/{print $2}' project.yml)
+[ -n "$MARKETING" ] || { echo "MARKETING_VERSION nicht in project.yml gefunden"; exit 1; }
+PRERELEASE=$(awk -F'"' '/FLOTY_PRERELEASE:/{print $2}' project.yml)
+if [ -n "$PRERELEASE" ]; then VERSION="$MARKETING-$PRERELEASE"; else VERSION="$MARKETING"; fi
 TAG="v$VERSION"
 echo "Version: $VERSION"
 

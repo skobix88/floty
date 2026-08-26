@@ -3,9 +3,9 @@
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
 Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
-## [1.0.0] – 2026-08-26
+## [1.0.0-rc.1] – 2026-08-26
 
-Erste vollständige Fassung.
+Erste vollständige Fassung, als Vorabversion zum Ausprobieren.
 
 ### Hinzugefügt
 
@@ -27,6 +27,10 @@ Erste vollständige Fassung.
 ### Geändert
 
 - Die Bedien-Symbole sind kleiner und blasser, damit der Text führt.
+- Die Einstellungen sitzen im Menüleisten-Menü; das Zahnrad im Panel ist
+  entfallen. ⌘, öffnet sie weiterhin.
+- Zusätzlich zum Neutralgrau gibt es Mitternachtsblau `#171E30`, umschaltbar in
+  den Einstellungen. Die Version steht dort jetzt ebenfalls.
 - Der Transparenzregler reicht weiter ins Durchscheinende (Untergrenze von 0,45
   auf 0,22).
 

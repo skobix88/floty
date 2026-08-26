@@ -11,6 +11,15 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
+            Section("Darstellung") {
+                Picker("Farbton", selection: $settings.tint) {
+                    ForEach(PanelTint.allCases) { tint in
+                        Text(tint.name).tag(tint)
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
+
             Section("Fenster") {
                 VStack(alignment: .leading, spacing: 4) {
                     Slider(value: $settings.panelOpacity, in: AppSettings.minimumOpacity...1)
@@ -53,6 +62,15 @@ struct SettingsView: View {
                     url: settings.vaultFolder,
                     placeholder: String(localized: "Noch nicht gewählt")
                 ) { settings.vaultFolder = $0 }
+            }
+
+            Section {
+                LabeledContent("Version") {
+                    Text(AppVersion.display)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                }
             }
         }
         .formStyle(.grouped)

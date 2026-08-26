@@ -26,7 +26,8 @@ Nutzers liegen darüber, die Untergrenze bleibt also.
   veränderbar. Position und Größe überleben Neustarts.
 - Leicht transparent, Transparenz stufenlos einstellbar von durchscheinend bis
   deckend. Die Untergrenze ist so gesetzt, dass Text lesbar bleibt.
-- Feste dunkle, neutrale/graue Farbgebung.
+- Dunkle Farbgebung, zwei Familien zur Wahl: Neutralgrau und Mitternachtsblau
+  `#171E30`. Kein Hell-Modus.
 - **Pin-Knopf** oben rechts löst den Widerspruch zwischen „immer im Vordergrund"
   und „beim Klick außerhalb schließen":
   - *ungepinnt* — das Panel blendet sich aus, sobald woanders hingeklickt wird
@@ -40,7 +41,9 @@ Floty lebt in der macOS-Menüleiste.
 
 - Klick auf das Menüleisten-Icon blendet das Panel ein und aus.
 - Einstellbarer globaler Hotkey für dieselbe Aktion (Vorgabe wie im Screenshot: ⌃⌥⌘N).
-- Einstellungen über das Menüleisten-Icon erreichbar.
+- Einstellungen über das Menüleisten-Icon erreichbar, zusätzlich per ⌘,.
+  Bewusst kein Knopf im Panel — der Zettel soll nichts zeigen, was man einmal
+  im Jahr braucht.
 - Optionaler Start bei macOS-Login.
 
 ## 3. Schreiben und Formatierung
@@ -122,11 +125,13 @@ weitergereicht und hier erledigt.
 
 ## 9. Einstellungen
 
+**Darstellung:** Farbton (Neutralgrau / Mitternachtsblau)
 **Fenster:** Transparenz (stufenlos) · immer im Vordergrund · beim Klick
 außerhalb schließen (nur wirksam, solange nicht festgepinnt)
 **Verhalten:** Start bei Login · globaler Kurzbefehl
 **Ablage:** Notizordner · Obsidian-Vault-Ordner
 **Sprache:** folgt der Systemsprache (Deutsch und Englisch)
+**Version:** wird unten im Einstellungsfenster angezeigt
 
 Die Fenstergröße wird nicht eingestellt, sondern gezogen — und gemerkt. Ist die
 gemerkte Position auf keinem vorhandenen Bildschirm mehr erreichbar, öffnet

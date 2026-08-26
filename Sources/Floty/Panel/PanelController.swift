@@ -51,6 +51,7 @@ final class PanelController: NSObject, NSWindowDelegate {
         )
         let panel = FlotyPanel(contentRect: frame)
         panel.delegate = self
+        panel.onSettingsShortcut = { [weak self] in self?.onOpenSettings() }
         panel.contentView = makeContentView()
         panel.setFrame(frame, display: false)
         return panel
@@ -62,8 +63,7 @@ final class PanelController: NSObject, NSWindowDelegate {
         NSHostingView(rootView: PanelView(
             store: store,
             settings: settings,
-            onClose: { [weak self] in self?.hide() },
-            onOpenSettings: { [weak self] in self?.onOpenSettings() }
+            onClose: { [weak self] in self?.hide() }
         ))
     }
 

@@ -6,7 +6,6 @@ struct PanelView: View {
     let store: NoteStore
     @Bindable var settings: AppSettings
     let onClose: () -> Void
-    let onOpenSettings: () -> Void
 
     @State private var showsPreview = false
     @State private var noteToDelete: NoteFile?
@@ -44,7 +43,7 @@ struct PanelView: View {
         .background {
             ZStack {
                 VisualEffectBackground()
-                Color(white: 0.12).opacity(settings.panelOpacity)
+                settings.tint.base.opacity(settings.panelOpacity)
             }
             .ignoresSafeArea()
         }
@@ -89,13 +88,6 @@ struct PanelView: View {
                 .foregroundStyle(Color(white: 0.92))
 
             Spacer(minLength: 8)
-
-            Button(action: onOpenSettings) {
-                Image(systemName: "gearshape")
-            }
-            .buttonStyle(.plain)
-            .foregroundStyle(ControlStyle.idle)
-            .help(String(localized: "Einstellungen"))
 
             Toggle(isOn: $settings.isPinned) {
                 Image(systemName: settings.isPinned ? "pin.fill" : "pin")

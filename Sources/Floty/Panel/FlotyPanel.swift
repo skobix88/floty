@@ -10,6 +10,20 @@ final class FlotyPanel: NSPanel {
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 
+    /// ⌘, hat kein sichtbares Gegenstück mehr - die Einstellungen sitzen im
+    /// Menüleisten-Menü. Ohne Hauptmenü muss das Panel den Kurzbefehl selbst
+    /// abfangen, sonst gäbe es ihn gar nicht.
+    var onSettingsShortcut: (() -> Void)?
+
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == [.command],
+           event.charactersIgnoringModifiers == "," {
+            onSettingsShortcut?()
+            return true
+        }
+        return super.performKeyEquivalent(with: event)
+    }
+
     init(contentRect: NSRect) {
         super.init(
             contentRect: contentRect,

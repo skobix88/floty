@@ -61,7 +61,7 @@ struct TabBarView: View {
                 .frame(width: max(70, CGFloat(draftName.count) * 8 + 20))
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(Color(white: 0.22), in: RoundedRectangle(cornerRadius: 7, style: .continuous))
+                .background(settings.tint.field, in: RoundedRectangle(cornerRadius: 7, style: .continuous))
                 .onSubmit(commitRename)
                 .onExitCommand { renamingID = nil }
                 .onAppear { nameFieldFocused = true }
@@ -78,7 +78,7 @@ struct TabBarView: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
                 .background(
-                    isActive ? Color(red: 0.20, green: 0.30, blue: 0.48) : Color(white: 0.20),
+                    isActive ? settings.tint.chipActive : settings.tint.chipIdle,
                     in: RoundedRectangle(cornerRadius: 7, style: .continuous)
                 )
                 .contentShape(Rectangle())
