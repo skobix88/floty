@@ -24,7 +24,8 @@
 
 ## Zu klären
 
-- GitHub-Kontoname — das Repository soll `floty` heißen, das Konto steht noch aus.
+- Wann aus `1.0.0-rc.1` die 1.0.0 wird — dafür sollten die Bedienwege, die in
+  `STAND.md` noch als „nur kompiliert" stehen, einmal im Alltag gelaufen sein.
 - Die Namensnennung für das Icon (CC Attribution, Zlatko Najdenovski) muss
   zusätzlich zur README auch in der fertigen App auftauchen — spätestens im
   „Über Floty“-Fenster, das es noch nicht gibt.

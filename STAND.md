@@ -59,14 +59,19 @@ belegt ist" weiter unten.
 
 | Baustein | Datei | Stand |
 |---|---|---|
-| MIT-Lizenz | `LICENSE` | liegt bei |
+| MIT-Lizenz | `LICENSE` | liegt bei, von GitHub erkannt |
+| Öffentliches Repository | — | angelegt und gepusht, Inhalt geprüft |
 | Release-Ablauf: prüfen, bauen, `.dmg` packen | `scripts/release.sh` | ausgeführt, Abbild eingehängt und geprüft |
 | Semantic Versioning mit Vorabkennzeichnung | `App/AppVersion.swift`, `project.yml` | automatisiert geprüft |
 | Version im Einstellungsfenster | `Settings/SettingsView.swift` | gebaut, nur kompiliert |
 
-**Offen:** GitHub-Repository `skobix88/floty` anlegen und den ersten Push. Das
-geschieht erst auf ausdrückliche Anweisung — ein öffentliches Repository lässt
-sich nicht still zurücknehmen.
+**Veröffentlicht:** <https://github.com/skobix88/floty>, öffentlich, MIT, Zweig
+`main`. Nicht im Repository: die erzeugte `.xcodeproj`, `Info.plist`,
+`Floty.entitlements`, `dist/`.
+
+**Offen:** Git-Tag `v1.0.0-rc.1` und GitHub Release mit angehängtem `.dmg`.
+`scripts/release.sh --publish` erledigt beides — bewusst erst auf ausdrückliche
+Anweisung, weil ein gezogenes Release sich nicht mehr still zurücknehmen lässt.
 
 ---
 

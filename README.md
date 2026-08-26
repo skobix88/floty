@@ -6,7 +6,7 @@
 A small, unobtrusive floating scratchpad for macOS. Not a note-taking app — a
 digital scrap of paper that is always one keystroke away.
 
-> **Status:** version 1.0.0.
+> **Status:** 1.0.0-rc.1 — a release candidate. Usable every day, still settling.
 
 ![Floty panel](docs/panel.png)
 
