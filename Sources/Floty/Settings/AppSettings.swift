@@ -11,6 +11,7 @@ final class AppSettings {
         static let notesFolderBookmark = "notesFolderBookmark"
         static let notesFolderPath = "notesFolderPath"
         static let vaultFolderBookmark = "vaultFolderBookmark"
+        static let vaultFolderPath = "vaultFolderPath"
         static let panelOpacity = "panelOpacity"
         static let isPinned = "isPinned"
         static let hidesOnClickOutside = "hidesOnClickOutside"
@@ -33,6 +34,17 @@ final class AppSettings {
     /// free of Floty's own files so Obsidian sees nothing but notes.
     var noteOrder: [String] { didSet { defaults.set(noteOrder, forKey: Key.noteOrder) } }
 
+    /// Stored, not computed: `@Observable` only tracks stored properties, and a
+    /// computed one would leave the settings window showing a stale value after
+    /// the user picked a folder.
+    var notesFolder: URL? {
+        didSet { persist(notesFolder, path: Key.notesFolderPath, bookmark: Key.notesFolderBookmark) }
+    }
+    /// Where "hand over to Obsidian" writes to. Nil until the user picks one.
+    var vaultFolder: URL? {
+        didSet { persist(vaultFolder, path: Key.vaultFolderPath, bookmark: Key.vaultFolderBookmark) }
+    }
+
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         let storedOpacity = defaults.object(forKey: Key.panelOpacity) as? Double
@@ -41,47 +53,34 @@ final class AppSettings {
         hidesOnClickOutside = defaults.object(forKey: Key.hidesOnClickOutside) as? Bool ?? true
         activeNoteName = defaults.string(forKey: Key.activeNoteName)
         noteOrder = defaults.stringArray(forKey: Key.noteOrder) ?? []
+        notesFolder = Self.loadFolder(defaults, path: Key.notesFolderPath, bookmark: Key.notesFolderBookmark)
+        vaultFolder = Self.loadFolder(defaults, path: Key.vaultFolderPath, bookmark: Key.vaultFolderBookmark)
     }
 
-    // MARK: - Notes folder
+    // MARK: - Folders
 
-    /// The folder notes live in. Resolved from a bookmark so a move in the
-    /// Finder does not break it; the plain path is a fallback for the case
-    /// where the bookmark cannot be resolved any more.
-    var notesFolder: URL? {
-        get {
-            if let bookmark = defaults.data(forKey: Key.notesFolderBookmark),
-               let url = FolderAccess.resolve(bookmark: bookmark) {
-                return url
-            }
-            if let path = defaults.string(forKey: Key.notesFolderPath) {
-                return URL(filePath: path, directoryHint: .isDirectory)
-            }
-            return nil
+    /// The bookmark is tried first because it survives a move in the Finder;
+    /// the plain path is the fallback when it cannot be resolved any more.
+    private static func loadFolder(_ defaults: UserDefaults, path: String, bookmark: String) -> URL? {
+        if let data = defaults.data(forKey: bookmark), let url = FolderAccess.resolve(bookmark: data) {
+            return url
         }
-        set {
-            guard let newValue else {
-                defaults.removeObject(forKey: Key.notesFolderBookmark)
-                defaults.removeObject(forKey: Key.notesFolderPath)
-                return
-            }
-            defaults.set(newValue.path(percentEncoded: false), forKey: Key.notesFolderPath)
-            defaults.set(try? FolderAccess.makeBookmark(for: newValue), forKey: Key.notesFolderBookmark)
-        }
+        guard let stored = defaults.string(forKey: path) else { return nil }
+        return URL(filePath: stored, directoryHint: .isDirectory)
     }
 
-    /// Where "hand over to Obsidian" writes to. Nil until the user picks one.
-    var vaultFolder: URL? {
-        get {
-            guard let bookmark = defaults.data(forKey: Key.vaultFolderBookmark) else { return nil }
-            return FolderAccess.resolve(bookmark: bookmark)
+    private func persist(_ url: URL?, path: String, bookmark: String) {
+        guard let url else {
+            defaults.removeObject(forKey: path)
+            defaults.removeObject(forKey: bookmark)
+            return
         }
-        set {
-            guard let newValue else {
-                defaults.removeObject(forKey: Key.vaultFolderBookmark)
-                return
-            }
-            defaults.set(try? FolderAccess.makeBookmark(for: newValue), forKey: Key.vaultFolderBookmark)
+        defaults.set(url.path(percentEncoded: false), forKey: path)
+        if let data = try? FolderAccess.makeBookmark(for: url) {
+            defaults.set(data, forKey: bookmark)
+        } else {
+            // Der Pfad allein reicht; ein altes, unpassendes Lesezeichen nicht.
+            defaults.removeObject(forKey: bookmark)
         }
     }
 

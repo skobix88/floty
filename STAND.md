@@ -2,7 +2,7 @@
 
 Was gebaut ist, wie es geprüft wurde, und warum es so entschieden wurde.
 
-**Stand: 26.08.2026 — M1 bis M3 gebaut, 75 Prüfungen laufen durch.**
+**Stand: 26.08.2026 — M1 bis M3 gebaut, 79 Prüfungen laufen durch.**
 
 ---
 
@@ -53,6 +53,7 @@ belegt ist" weiter unten.
 | Export als `.md` über Sichern-Dialog | `Integrations/NoteExport.swift` | gebaut, nur kompiliert |
 | Teilen über das Share Sheet (`ShareLink` auf die Notizdatei) | `Panel/TabBarView.swift` | gebaut, nur kompiliert |
 | App-Icon aus der SVG-Vorlage, reproduzierbar erzeugt | `scripts/make-icon.swift` | im gebauten Bündel nachgewiesen (`AppIcon.icns`), Optik angesehen |
+| Menüleisten-Symbol aus derselben Vorlage, als Schablone | `Resources/Assets.xcassets/MenuBarIcon.imageset` | automatisiert geprüft (liegt im Bündel, ist Schablone) |
 
 ### M4 — Es wird verteilt · offen
 
@@ -124,11 +125,13 @@ Auflösung: beide Verhaltensweisen, umschaltbar mit einem Klick.
 ### Kein App Sandbox
 
 Floty ist nicht für den App Store gedacht. Ohne Sandbox entfallen Sonderwege bei
-Ordnerzugriff und globalem Hotkey. Der Security-Scoped Bookmark für den
-Notizordner wird trotzdem gespeichert, damit ein späterer Sandbox-Umzug nicht am
-Datenzugriff scheitert. Hardened Runtime bleibt eingeschaltet, damit für die
-Notarisierung später nur noch das Zertifikat fehlt — wirksam wird es allerdings
-erst mit einem echten Zertifikat, siehe unten.
+Ordnerzugriff und globalem Hotkey. Hardened Runtime bleibt eingeschaltet, damit
+für die Notarisierung später nur noch das Zertifikat fehlt — wirksam wird es
+allerdings erst mit einem echten Zertifikat, siehe unten.
+
+**Berichtigt:** Hier stand, der Security-Scoped Bookmark werde „für einen
+späteren Sandbox-Umzug" mitgespeichert. Das war falsch und hat einen Fehler
+verursacht — siehe unten.
 
 ### Kästchen zeichnen, ohne die Datei zu verändern
 
@@ -229,6 +232,27 @@ die Datei landet in `~/Library/Mobile Documents/.Trash/`, nicht im Papierkorb de
 Benutzerordners. Beim Suchen an der falschen Stelle sieht das wie Datenverlust
 aus, ist aber keiner.
 
+### Lesezeichen ohne Security Scope
+
+`.withSecurityScope` gehört in die Sandbox. Ohne Sandbox lässt sich ein so
+erzeugtes Lesezeichen zwar anlegen, aber nicht wieder auflösen — das Auflösen
+scheitert mit `NSCocoaErrorDomain 259`. Der Obsidian-Vault las sich dadurch nach
+dem Auswählen als „noch nicht gewählt" zurück. Beim Notizordner fiel es nicht
+auf, weil dort der Pfad als Rückfallebene mitlief.
+
+Jetzt werden gewöhnliche Lesezeichen erzeugt. Sie leisten das, worauf es
+ankommt: sie überstehen ein Verschieben oder Umbenennen des Ordners im Finder,
+was ein Pfad nicht tut. Ein Test führt beides vor und würde den Fehler wieder
+fangen. `Storage/FolderAccess.swift` ist die einzige Stelle, die für einen
+Sandbox-Umzug anzupassen wäre.
+
+### Ordner als gespeicherte Eigenschaften, nicht berechnet
+
+Zweiter Teil desselben Fehlers: `notesFolder` und `vaultFolder` waren berechnete
+Eigenschaften über `UserDefaults`. `@Observable` verfolgt aber nur gespeicherte
+Eigenschaften — das Einstellungsfenster hätte den neuen Ordner selbst dann nicht
+angezeigt, wenn das Lesezeichen funktioniert hätte.
+
 ### Das Icon wird erzeugt, nicht abgelegt
 
 `scripts/make-icon.swift` rendert den Symbolsatz aus `Resources/AppIcon.svg`.
@@ -275,7 +299,7 @@ laufen, sonst ist die Untergrenze neu zu entscheiden.
 
 ## Prüfung
 
-**75 Prüfungen in 11 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
+**79 Prüfungen in 12 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
 Das Testschema setzt `FLOTY_TESTING=1`; `NoteStore` nimmt dann nur noch Ordner
 unterhalb des Temp-Verzeichnisses an, und der `AppDelegate` überspringt beim
 Start seine gesamte Einrichtung — sonst würde der Test-Host den echten
@@ -291,6 +315,7 @@ Notizordner öffnen.
 | Fensterplatzierung | Standardposition, fehlende gemerkte Position, sichtbare Position bleibt, zweiter Bildschirm bleibt, abgezogener Bildschirm holt zurück, knappe Überlappung, leerer Rahmen |
 | Tab-Reihenfolge | gemerkte Reihenfolge gewinnt, Unbekanntes hinten, verschwundene Namen stören nicht, natürliche Sortierung, Verschieben, Anschläge |
 | Vorschau | Marker verschwinden, Formatierung bleibt, Überschriften, Aufgaben mit Durchstreichung, Aufzählungen, mehrere Zeilen, Formatierung in Aufgaben, unvollständige Marker, leerer Text |
+| Ordner merken | Lesezeichen anlegen und auflösen, überlebt Umbenennen, kaputte Daten ergeben nil, Menüleisten-Symbol liegt im Bündel |
 | Obsidian-Übergabe | freier Name, vorhandene Vault-Notiz wird nie überschrieben, Hochzählen, Schrägstriche, Rückfallname, URL-Kodierung, fehlender Vault, echtes Schreiben in einen Testordner |
 | Aktiver Tab nach dem Löschen | Hintergrund-Tab verschiebt den Nutzer nicht, Nachbar rückt nach, letzter Tab, nichts mehr übrig, verschwundener aktiver Tab |
 | Notizablage | Testordner-Sperre, Schreiben/Wiedereinlesen, unveränderte Datei bleibt unangetastet, Umbenennen, Namenskonflikte, Schrägstriche im Namen, Papierkorb statt Löschen, Fremddatei wird Tab, Nicht-Markdown wird ignoriert |

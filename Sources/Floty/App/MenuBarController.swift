@@ -15,9 +15,13 @@ final class MenuBarController {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "note.text",
-                                   accessibilityDescription: String(localized: "Floty"))
-            button.image?.isTemplate = true
+            // Flotys eigenes Zeichen, nicht das Systemsymbol - sonst sieht das
+            // Symbol in der Leiste nach einer anderen App aus als das im Dock.
+            let icon = NSImage(named: "MenuBarIcon")
+            icon?.size = NSSize(width: 17, height: 17)
+            icon?.isTemplate = true
+            icon?.accessibilityDescription = String(localized: "Floty")
+            button.image = icon
             button.target = self
             button.action = #selector(buttonClicked)
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])

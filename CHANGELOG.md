@@ -42,3 +42,8 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 - Ein fehlgeschlagenes Löschen blieb unsichtbar; es wird jetzt gemeldet.
 - Eine Notiz im Hintergrund zu löschen sprang zum ersten Tab.
 - Ein angefangenes Umbenennen blieb hängen, wenn man daneben klickte.
+- Der gewählte Obsidian-Vault las sich als „noch nicht gewählt" zurück: die
+  Lesezeichen wurden mit `.withSecurityScope` erzeugt, was ohne Sandbox nicht
+  wieder auflösbar ist. Zusätzlich waren die Ordner berechnete Eigenschaften und
+  damit für `@Observable` unsichtbar.
+- Das Menüleisten-Symbol war ein Systemsymbol statt Flotys eigenem Zeichen.
