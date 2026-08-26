@@ -7,6 +7,7 @@ struct TabBarView: View {
     let activeNote: NoteFile?
     let onSelect: (NoteFile) -> Void
     let onDelete: (NoteFile) -> Void
+    let onHandOverToObsidian: (NoteFile) -> Void
 
     @State private var renamingID: NoteFile.ID?
     @State private var draftName = ""
@@ -27,7 +28,7 @@ struct TabBarView: View {
                 Image(systemName: "plus")
             }
             .buttonStyle(.plain)
-            .foregroundStyle(Color(white: 0.68))
+            .foregroundStyle(ControlStyle.idle)
             .help(String(localized: "Neue Notiz"))
 
             Menu {
@@ -38,10 +39,10 @@ struct TabBarView: View {
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
             .fixedSize()
-            .foregroundStyle(Color(white: 0.68))
+            .foregroundStyle(ControlStyle.idle)
             .disabled(activeNote == nil)
         }
-        .imageScale(.medium)
+        .font(ControlStyle.icon(ControlStyle.tabSize))
         .padding(.horizontal, 14)
         .padding(.bottom, 6)
     }
@@ -94,6 +95,11 @@ struct TabBarView: View {
     private var menuItems: some View {
         if let note = activeNote {
             Button(String(localized: "Umbenennen")) { beginRename(note) }
+            Divider()
+            Button(String(localized: "An Obsidian übergeben")) { onHandOverToObsidian(note) }
+            ShareLink(item: note.url) {
+                Text(String(localized: "Teilen …"))
+            }
             Divider()
             Button(String(localized: "Nach links")) { move(note, by: -1) }
                 .disabled(store.notes.first?.id == note.id)

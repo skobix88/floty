@@ -5,6 +5,7 @@ struct FooterView: View {
     @Binding var showsPreview: Bool
     let canAct: Bool
     let onCopy: () -> Void
+    let onExport: () -> Void
     let onDelete: () -> Void
 
     @State private var copied = false
@@ -23,6 +24,11 @@ struct FooterView: View {
             }
             .help(String(localized: "Notiz kopieren"))
 
+            Button(action: onExport) {
+                Image(systemName: "square.and.arrow.down")
+            }
+            .help(String(localized: "Als Markdown-Datei sichern"))
+
             Spacer()
 
             Button(action: onDelete) {
@@ -31,8 +37,8 @@ struct FooterView: View {
             .help(String(localized: "Notiz in den Papierkorb legen"))
         }
         .buttonStyle(.plain)
-        .imageScale(.large)
-        .foregroundStyle(Color(white: 0.62))
+        .font(ControlStyle.icon(ControlStyle.footerSize))
+        .foregroundStyle(ControlStyle.idle)
         .disabled(!canAct)
         .padding(.horizontal, 16)
         .padding(.top, 6)

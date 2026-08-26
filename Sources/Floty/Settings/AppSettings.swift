@@ -19,8 +19,9 @@ final class AppSettings {
         static let noteOrder = "noteOrder"
     }
 
-    /// Below this the text stops being readable on a busy desktop.
-    static let minimumOpacity: Double = 0.45
+    /// How far the slider may go towards transparent. The blurred backdrop
+    /// underneath keeps the text readable even at the low end.
+    static let minimumOpacity: Double = 0.22
 
     @ObservationIgnored private let defaults: UserDefaults
 

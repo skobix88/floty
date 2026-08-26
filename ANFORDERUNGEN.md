@@ -15,7 +15,8 @@ ein **digitaler Schmierzettel**, der jederzeit schnell erreichbar ist.
 
 Design-Referenz: [Panel](docs/panel.png) und [Einstellungen](docs/einstellungen.png).
 
-Zielplattform: **macOS 26** und neuer, Apple Silicon und Intel.
+Zielplattform: **macOS 26** und neuer, Apple Silicon und Intel. Beide Macs des
+Nutzers liegen darüber, die Untergrenze bleibt also.
 
 ---
 
@@ -133,9 +134,10 @@ Floty wieder an seinem Standardplatz.
 
 ## 10. Icon
 
-Ausgangspunkt ist die [SVG-Vorlage](https://www.svgviewer.dev/s/ScaiYQHQ). Das
-Icon soll sich in das macOS-Design einfügen und den leichten, minimalistischen
-Charakter unterstützen.
+Ein Klemmbrett-Umriss auf dunkler, gerundeter Kachel — passend zur festen
+dunklen Farbgebung. Quelle: `Resources/AppIcon.svg` von Zlatko Najdenovski,
+Lizenz CC Attribution; die Namensnennung ist Pflicht. Der Symbolsatz wird mit
+`scripts/make-icon.swift` erzeugt, damit er aus der Quelle reproduzierbar bleibt.
 
 ## 11. Veröffentlichung, Versionierung, Verteilung
 

@@ -60,3 +60,8 @@ way), [TODO.md](TODO.md) (what is still open).
 ## License
 
 Not decided yet.
+
+The app icon is based on a clipboard glyph by
+[Zlatko Najdenovski](https://www.figma.com/@zlat), licensed CC Attribution.
+Source: [`Resources/AppIcon.svg`](Resources/AppIcon.svg), rendered by
+[`scripts/make-icon.swift`](scripts/make-icon.swift).

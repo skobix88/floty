@@ -28,10 +28,9 @@
 - Lizenz für das öffentliche Repository. Übliche Wahl wäre MIT (jeder darf
   alles, Haftung ausgeschlossen). Muss vor der Veröffentlichung feststehen —
   ohne Lizenz gilt volles Urheberrecht, niemand darf den Code benutzen.
-- App-Icon: die SVG-Vorlage aus Abschnitt 10 der Anforderungen liegt bisher nur
-  als Weblink vor und muss in einen Icon-Satz überführt werden.
-- Läuft der zweite Mac auf macOS 26? Wenn nein, ist die Mindestversion neu zu
-  entscheiden (14 Sonoma kostet uns nichts).
+- Die Namensnennung für das Icon (CC Attribution, Zlatko Najdenovski) muss
+  zusätzlich zur README auch in der fertigen App auftauchen — spätestens im
+  „Über Floty“-Fenster, das es noch nicht gibt.
 
 ## Aus dem Betrieb
 

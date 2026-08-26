@@ -11,6 +11,7 @@ struct PanelView: View {
     @State private var showsPreview = false
     @State private var noteToDelete: NoteFile?
     @State private var errorMessage: String?
+    @State private var handedOver: NoteFile?
 
     private var activeNote: NoteFile? {
         if let name = settings.activeNoteName,
@@ -28,13 +29,15 @@ struct PanelView: View {
                 settings: settings,
                 activeNote: activeNote,
                 onSelect: { settings.activeNoteName = $0.name },
-                onDelete: { noteToDelete = $0 }
+                onDelete: { noteToDelete = $0 },
+                onHandOverToObsidian: handOver
             )
             content
             FooterView(
                 showsPreview: $showsPreview,
                 canAct: activeNote != nil,
                 onCopy: copyNote,
+                onExport: exportNote,
                 onDelete: { noteToDelete = activeNote }
             )
         }
@@ -48,12 +51,22 @@ struct PanelView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .preferredColorScheme(.dark)
         .alert(
-            String(localized: "Die Notiz ließ sich nicht in den Papierkorb legen."),
+            String(localized: "Das hat nicht geklappt."),
             isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
         ) {
-            Button(String(localized: "Abbrechen"), role: .cancel) { errorMessage = nil }
+            Button(String(localized: "Verstanden"), role: .cancel) { errorMessage = nil }
         } message: {
             Text(errorMessage ?? "")
+        }
+        .confirmationDialog(
+            String(localized: "An Obsidian übergeben – Tab schließen?"),
+            isPresented: Binding(get: { handedOver != nil }, set: { if !$0 { handedOver = nil } }),
+            presenting: handedOver
+        ) { note in
+            Button(String(localized: "Tab schließen")) { delete(note) }
+            Button(String(localized: "Behalten"), role: .cancel) { handedOver = nil }
+        } message: { _ in
+            Text(String(localized: "Die Notiz liegt jetzt im Vault. Der Gedanke ist weitergereicht."))
         }
         .confirmationDialog(
             String(localized: "Notiz in den Papierkorb legen?"),
@@ -81,7 +94,7 @@ struct PanelView: View {
                 Image(systemName: "gearshape")
             }
             .buttonStyle(.plain)
-            .foregroundStyle(Color(white: 0.62))
+            .foregroundStyle(ControlStyle.idle)
             .help(String(localized: "Einstellungen"))
 
             Toggle(isOn: $settings.isPinned) {
@@ -89,7 +102,7 @@ struct PanelView: View {
             }
             .toggleStyle(.button)
             .buttonStyle(.plain)
-            .foregroundStyle(Color(white: settings.isPinned ? 0.95 : 0.62))
+            .foregroundStyle(settings.isPinned ? ControlStyle.active : ControlStyle.idle)
             .help(settings.isPinned
                   ? String(localized: "Loslösen – Panel blendet sich beim Klick außerhalb aus")
                   : String(localized: "Festpinnen – Panel bleibt über allen Fenstern"))
@@ -98,10 +111,10 @@ struct PanelView: View {
                 Image(systemName: "xmark.circle.fill")
             }
             .buttonStyle(.plain)
-            .foregroundStyle(Color(white: 0.62))
+            .foregroundStyle(ControlStyle.idle)
             .help(String(localized: "Schließen"))
         }
-        .imageScale(.large)
+        .font(ControlStyle.icon(ControlStyle.headerSize))
         .padding(.horizontal, 14)
         .padding(.top, 12)
         .padding(.bottom, 8)
@@ -142,8 +155,30 @@ struct PanelView: View {
         NSPasteboard.general.setString(store.text(for: note.id), forType: .string)
     }
 
+    private func exportNote() {
+        guard let note = activeNote else { return }
+        do {
+            try NoteExport.save(text: store.text(for: note.id), named: note.name)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func handOver(_ note: NoteFile) {
+        store.save(note.id)
+        do {
+            try ObsidianBridge.handOver(text: store.text(for: note.id),
+                                        named: note.name,
+                                        to: settings.vaultFolder)
+            handedOver = note
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
     private func delete(_ note: NoteFile) {
         noteToDelete = nil
+        handedOver = nil
         let index = store.notes.firstIndex(where: { $0.id == note.id }) ?? 0
         do {
             try store.moveToTrash(note.id)

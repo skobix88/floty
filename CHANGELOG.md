@@ -19,6 +19,15 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 - `scripts/install.sh`: baut Release und installiert nach `/Applications`.
 
+- M3: Übergabe an Obsidian, Export als `.md`, Teilen über das Share Sheet und
+  ein App-Icon, das mit `scripts/make-icon.swift` aus der SVG-Vorlage erzeugt wird.
+
+### Geändert
+
+- Die Bedien-Symbole sind kleiner und blasser, damit der Text führt.
+- Der Transparenzregler reicht weiter ins Durchscheinende (Untergrenze von 0,45
+  auf 0,22).
+
 ### Behoben
 
 - Die App startete lautlos ohne Fenster: `@main` auf dem Delegaten verbindet bei

@@ -2,7 +2,7 @@
 
 Was gebaut ist, wie es geprüft wurde, und warum es so entschieden wurde.
 
-**Stand: 25.08.2026 — M1 und M2 gebaut, 67 Prüfungen laufen durch.**
+**Stand: 26.08.2026 — M1 bis M3 gebaut, 75 Prüfungen laufen durch.**
 
 ---
 
@@ -45,9 +45,14 @@ belegt ist" weiter unten.
 `/Applications`. Vorgezogen aus M4, weil eine App im Build-Ordner sich nicht über
 „Programme" starten lässt — nach dem ersten Beenden war Floty sonst weg.
 
-### M3 — Es geht raus · offen
+### M3 — Es geht raus · gebaut
 
-Export als `.md`, Share Sheet, Obsidian-Übergabe, App-Icon.
+| Baustein | Datei | Stand |
+|---|---|---|
+| Obsidian-Übergabe: Datei in den Vault, `obsidian://open`, danach Tab schließen anbieten | `Integrations/ObsidianBridge.swift` | automatisiert geprüft (auch: überschreibt nie) |
+| Export als `.md` über Sichern-Dialog | `Integrations/NoteExport.swift` | gebaut, nur kompiliert |
+| Teilen über das Share Sheet (`ShareLink` auf die Notizdatei) | `Panel/TabBarView.swift` | gebaut, nur kompiliert |
+| App-Icon aus der SVG-Vorlage, reproduzierbar erzeugt | `scripts/make-icon.swift` | im gebauten Bündel nachgewiesen (`AppIcon.icns`), Optik angesehen |
 
 ### M4 — Es wird verteilt · offen
 
@@ -224,6 +229,25 @@ die Datei landet in `~/Library/Mobile Documents/.Trash/`, nicht im Papierkorb de
 Benutzerordners. Beim Suchen an der falschen Stelle sieht das wie Datenverlust
 aus, ist aber keiner.
 
+### Das Icon wird erzeugt, nicht abgelegt
+
+`scripts/make-icon.swift` rendert den Symbolsatz aus `Resources/AppIcon.svg`.
+Damit bleibt nachvollziehbar, woher das Icon kommt — das ist bei einer Vorlage
+unter CC Attribution keine Kür, sondern Voraussetzung für die Namensnennung.
+`NSImage` liest SVG unter macOS direkt, es braucht also kein Zusatzwerkzeug.
+
+Eine Falle dabei: der Umriss wird mit `sourceAtop` hell umgefärbt, und das färbt
+alles, was schon gezeichnet ist. Direkt über der Kachel ergab das ein volles
+Quadrat statt eines Umrisses. Die Einfärbung passiert deshalb zuerst auf
+durchsichtigem Grund und wird erst danach auf die Kachel gesetzt.
+
+### Bedien-Symbole an einer Stelle
+
+Größe und Grauton der kleinen Symbole stehen in `Panel/ControlStyle.swift`. Sie
+waren zu groß und zu hell und drängten sich vor den Text; das Vorbild lässt sie
+zurücktreten. An einer Stelle gebündelt, weil so ein Feinabgleich sonst fünf
+Dateien anfasst.
+
 ### Ad-hoc-Signierung schaltet Hardened Runtime ab
 
 `ENABLE_HARDENED_RUNTIME: YES` steht in `project.yml`, Xcode meldet beim Bauen
@@ -251,7 +275,7 @@ laufen, sonst ist die Untergrenze neu zu entscheiden.
 
 ## Prüfung
 
-**67 Prüfungen in 10 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
+**75 Prüfungen in 11 Gruppen, alle grün** (`xcodebuild test`, Swift Testing).
 Das Testschema setzt `FLOTY_TESTING=1`; `NoteStore` nimmt dann nur noch Ordner
 unterhalb des Temp-Verzeichnisses an, und der `AppDelegate` überspringt beim
 Start seine gesamte Einrichtung — sonst würde der Test-Host den echten
@@ -267,6 +291,7 @@ Notizordner öffnen.
 | Fensterplatzierung | Standardposition, fehlende gemerkte Position, sichtbare Position bleibt, zweiter Bildschirm bleibt, abgezogener Bildschirm holt zurück, knappe Überlappung, leerer Rahmen |
 | Tab-Reihenfolge | gemerkte Reihenfolge gewinnt, Unbekanntes hinten, verschwundene Namen stören nicht, natürliche Sortierung, Verschieben, Anschläge |
 | Vorschau | Marker verschwinden, Formatierung bleibt, Überschriften, Aufgaben mit Durchstreichung, Aufzählungen, mehrere Zeilen, Formatierung in Aufgaben, unvollständige Marker, leerer Text |
+| Obsidian-Übergabe | freier Name, vorhandene Vault-Notiz wird nie überschrieben, Hochzählen, Schrägstriche, Rückfallname, URL-Kodierung, fehlender Vault, echtes Schreiben in einen Testordner |
 | Aktiver Tab nach dem Löschen | Hintergrund-Tab verschiebt den Nutzer nicht, Nachbar rückt nach, letzter Tab, nichts mehr übrig, verschwundener aktiver Tab |
 | Notizablage | Testordner-Sperre, Schreiben/Wiedereinlesen, unveränderte Datei bleibt unangetastet, Umbenennen, Namenskonflikte, Schrägstriche im Namen, Papierkorb statt Löschen, Fremddatei wird Tab, Nicht-Markdown wird ignoriert |
 

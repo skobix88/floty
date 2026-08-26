@@ -23,6 +23,50 @@
         }
       }
     },
+    "Als Markdown-Datei sichern": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save as a Markdown file"
+          }
+        }
+      }
+    },
+    "An Obsidian übergeben": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hand over to Obsidian"
+          }
+        }
+      }
+    },
+    "An Obsidian übergeben – Tab schließen?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Handed over to Obsidian – close the tab?"
+          }
+        }
+      }
+    },
+    "Behalten": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep"
+          }
+        }
+      }
+    },
     "Beim Klick außerhalb schließen": {
       "extractionState": "manual",
       "localizations": {
@@ -30,6 +74,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hide when clicking outside"
+          }
+        }
+      }
+    },
+    "Das hat nicht geklappt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That did not work."
           }
         }
       }
@@ -52,6 +107,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "The notes folder cannot be reached."
+          }
+        }
+      }
+    },
+    "Die Notiz liegt jetzt im Vault. Der Gedanke ist weitergereicht.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The note is in your vault now. The thought has been passed on."
           }
         }
       }
@@ -85,6 +151,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Settings …"
+          }
+        }
+      }
+    },
+    "Es ist noch kein Obsidian-Vault gewählt. Das steht in den Einstellungen unter „Ablage“.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Obsidian vault has been chosen yet. You set that under “Storage” in Settings."
           }
         }
       }
@@ -369,6 +446,28 @@
         }
       }
     },
+    "Tab schließen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close tab"
+          }
+        }
+      }
+    },
+    "Teilen …": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share …"
+          }
+        }
+      }
+    },
     "Umbenennen": {
       "extractionState": "manual",
       "localizations": {
@@ -387,6 +486,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Behaviour"
+          }
+        }
+      }
+    },
+    "Verstanden": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
