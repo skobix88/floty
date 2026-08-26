@@ -24,10 +24,7 @@
 
 ## Zu klären
 
-- GitHub-Kontoname und Repository-Name — spätestens zu M4.
-- Lizenz für das öffentliche Repository. Übliche Wahl wäre MIT (jeder darf
-  alles, Haftung ausgeschlossen). Muss vor der Veröffentlichung feststehen —
-  ohne Lizenz gilt volles Urheberrecht, niemand darf den Code benutzen.
+- GitHub-Kontoname — das Repository soll `floty` heißen, das Konto steht noch aus.
 - Die Namensnennung für das Icon (CC Attribution, Zlatko Najdenovski) muss
   zusätzlich zur README auch in der fertigen App auftauchen — spätestens im
   „Über Floty“-Fenster, das es noch nicht gibt.

@@ -17,3 +17,6 @@ xcuserdata/
 # Von XcodeGen aus project.yml erzeugt
 Sources/Floty/Resources/Info.plist
 Sources/Floty/Resources/Floty.entitlements
+
+# Erzeugte Abbilder
+dist/

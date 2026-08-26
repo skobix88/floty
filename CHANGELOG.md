@@ -3,7 +3,9 @@
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
 Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
-## [Unveröffentlicht]
+## [1.0.0] – 2026-08-26
+
+Erste vollständige Fassung.
 
 ### Hinzugefügt
 
@@ -47,3 +49,6 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   wieder auflösbar ist. Zusätzlich waren die Ordner berechnete Eigenschaften und
   damit für `@Observable` unsichtbar.
 - Das Menüleisten-Symbol war ein Systemsymbol statt Flotys eigenem Zeichen.
+
+- MIT-Lizenz und `scripts/release.sh`: baut, prüft, packt ein `.dmg` und legt
+  auf ausdrückliche Anweisung Git-Tag und GitHub Release an.

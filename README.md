@@ -6,7 +6,7 @@
 A small, unobtrusive floating scratchpad for macOS. Not a note-taking app — a
 digital scrap of paper that is always one keystroke away.
 
-> **Status:** early development. Nothing to install yet.
+> **Status:** version 1.0.0.
 
 ![Floty panel](docs/panel.png)
 
@@ -32,6 +32,15 @@ digital scrap of paper that is always one keystroke away.
 ## Requirements
 
 macOS 26 or newer.
+
+## Install
+
+Download the `.dmg` from the [latest release](../../releases/latest) and drag
+Floty into your Applications folder.
+
+Floty is ad-hoc signed, not notarised, so the first launch needs a right click
+on the app and **Open** — the normal double click will be refused by Gatekeeper.
+Once opened, it starts normally from then on.
 
 ## Building
 
@@ -59,7 +68,7 @@ way), [TODO.md](TODO.md) (what is still open).
 
 ## License
 
-Not decided yet.
+MIT — see [LICENSE](LICENSE).
 
 The app icon is based on a clipboard glyph by
 [Zlatko Najdenovski](https://www.figma.com/@zlat), licensed CC Attribution.
