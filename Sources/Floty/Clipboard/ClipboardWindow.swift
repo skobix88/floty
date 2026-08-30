@@ -61,10 +61,14 @@ final class ClipboardWindowController: NSObject, NSWindowDelegate {
         panel.standardWindowButton(.closeButton)?.isHidden = true
         panel.standardWindowButton(.miniaturizeButton)?.isHidden = true
         panel.standardWindowButton(.zoomButton)?.isHidden = true
+        // Dieselben Fenstereigenschaften wie beim Schmierzettel-Panel, damit
+        // beide Fenster gleich aussehen. Nur verschiebbar ist es nicht: ein
+        // Auswahldialog soll beim Danebenklicken nicht wandern.
         panel.isOpaque = false
         panel.backgroundColor = .clear
         panel.hasShadow = true
         panel.isRestorable = false
+        panel.animationBehavior = .utilityWindow
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.delegate = self
         return panel

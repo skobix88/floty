@@ -14,6 +14,13 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   aufgenommen; Programme lassen sich ausschließen, die Aufzeichnung pausieren
   und der Verlauf jederzeit leeren.
 
+### Behoben
+
+- Das Auswahlfenster der Zwischenablage sah anders aus als der Schmierzettel:
+  der Fensterhintergrund war doppelt geschrieben, und bei leerem Verlauf endete
+  die Fläche unter der Suchzeile. Beide Fenster teilen sich jetzt einen
+  Hintergrund.
+
 ## [1.0.0-rc.1] – 2026-08-26
 
 Erste vollständige Fassung, als Vorabversion zum Ausprobieren.

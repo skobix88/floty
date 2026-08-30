@@ -103,6 +103,18 @@ Enter, Esc, ⌘⌫ — und der Einstellungsabschnitt.
 
 ## Entwurfsentscheidungen und ihr Warum
 
+### Ein Hintergrund für beide Fenster
+
+Der Fensterhintergrund — Weichzeichner, Farbton, gerundete Ecken — stand zweimal
+im Code: einmal im Schmierzettel-Panel, einmal im Auswahlfenster. Genau so
+driften zwei Fenster derselben App auseinander. Jetzt gibt es
+`Panel/PanelBackground.swift`, und beide benutzen ihn.
+
+Dabei fiel ein Fehler auf: der Hintergrund lag nur hinter dem Inhalt. War der
+Verlauf leer, endete die Fläche unter der Suchzeile und der Rest des Fensters
+blieb durchsichtig. Der gemeinsame Baustein zwingt den Inhalt jetzt auf die
+volle Fenstergröße.
+
 ### Die Zwischenablage ist ein zweites Werkzeug, kein Teil des Zettels
 
 Ein Schmierzettel hält selbst formulierte Gedanken fest; ein Verlauf

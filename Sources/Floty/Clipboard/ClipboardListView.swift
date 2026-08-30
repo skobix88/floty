@@ -24,16 +24,7 @@ struct ClipboardListView: View {
                 list
             }
         }
-        .background {
-            ZStack {
-                VisualEffectBackground()
-                settings.tint.base
-            }
-            .opacity(settings.panelOpacity)
-            .ignoresSafeArea()
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .preferredColorScheme(.dark)
+        .flotyBackground(tint: settings.tint, opacity: settings.panelOpacity)
         .onAppear {
             searchFocused = true
             selection = visible.first?.id
