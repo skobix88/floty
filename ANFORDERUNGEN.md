@@ -145,7 +145,7 @@ Ein zweites Werkzeug unter demselben Dach, **standardmäßig ausgeschaltet**.
 Eingeschaltet merkt sich Floty, was kopiert wurde, und reicht es auf Wunsch
 zurück in die Zwischenablage.
 
-- **Eigenes Fenster, eigener Kurzbefehl** (Vorgabe ⌃⌥⌘V). Es öffnet mittig oben,
+- **Eigenes Fenster, eigener Kurzbefehl** (Vorgabe ⌃⌥⌘C — ⌃⌥⌘V wäre naheliegender, ist auf dem Entwicklungsrechner aber von Raycast belegt). Es öffnet mittig oben,
   du wählst, es schließt. Kein Pin — es ist ein Auswahldialog, kein Aufenthaltsort.
 - **Tastatur zuerst:** Cursor im Suchfeld, Tippen filtert über Name und Inhalt,
   Pfeiltasten wählen, Enter übernimmt, Esc schließt, ⌘⌫ löscht den Eintrag.

@@ -103,6 +103,16 @@ Enter, Esc, ⌘⌫ — und der Einstellungsabschnitt.
 
 ## Entwurfsentscheidungen und ihr Warum
 
+### Kurzbefehl ⌃⌥⌘C statt ⌃⌥⌘V
+
+Naheliegend wäre ⌃⌥⌘V gewesen, als Geschwister zu ⌃⌥⌘N für den Zettel. Im
+Betrieb gingen daraufhin zwei Fenster übereinander auf: Raycast bringt eine
+eigene Zwischenablage-Historie mit und hört auf dieselbe Kombination. Die Vorgabe
+ist jetzt ⌃⌥⌘C, änderbar in den Einstellungen.
+
+Lehre daraus, die über diesen Fall hinausgeht: eine Vorgabe für einen globalen
+Kurzbefehl ist immer eine Wette darauf, dass der Rechner ihn noch frei hat.
+
 ### Ein Hintergrund für beide Fenster
 
 Der Fensterhintergrund — Weichzeichner, Farbton, gerundete Ecken — stand zweimal

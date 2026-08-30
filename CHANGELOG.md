@@ -8,7 +8,7 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 ### Hinzugefügt
 
 - **Zwischenablage-Verlauf**, standardmäßig ausgeschaltet. Eigenes Fenster mit
-  eigenem Kurzbefehl (⌃⌥⌘V), Text und Bilder, Suche und Tastaturbedienung,
+  eigenem Kurzbefehl (⌃⌥⌘C), Text und Bilder, Suche und Tastaturbedienung,
   Anklicken legt den Eintrag zurück in die Zwischenablage. Grenzen nach Anzahl
   und Platz. Als verborgen markierte Inhalte aus Passwortmanagern werden nie
   aufgenommen; Programme lassen sich ausschließen, die Aufzeichnung pausieren
@@ -16,6 +16,9 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ### Behoben
 
+- Der Kurzbefehl der Zwischenablage lag auf ⌃⌥⌘V und damit auf derselben
+  Tastenkombination wie Raycasts eigene Historie — beide Fenster gingen
+  übereinander auf. Vorgabe jetzt ⌃⌥⌘C.
 - Das Auswahlfenster der Zwischenablage sah anders aus als der Schmierzettel:
   der Fensterhintergrund war doppelt geschrieben, und bei leerem Verlauf endete
   die Fläche unter der Suchzeile. Beide Fenster teilen sich jetzt einen
