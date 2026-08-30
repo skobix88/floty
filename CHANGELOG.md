@@ -34,9 +34,8 @@ Erste vollständige Fassung, als Vorabversion zum Ausprobieren.
 - Der Farbton färbt jetzt die ganze Fläche statt nur die Registerkarten: er
   liegt volldeckend unter dem Regler, statt mit dessen Deckkraft über dem
   Weichzeichner zu liegen.
-- Der Transparenzregler reicht deutlich weiter (Untergrenze von 0,22 auf 0,08).
-- Der Transparenzregler reicht weiter ins Durchscheinende (Untergrenze von 0,45
-  auf 0,22).
+- Der Transparenzregler reicht deutlich weiter ins Durchscheinende
+  (Untergrenze von 0,45 auf 0,08).
 
 ### Behoben
 
