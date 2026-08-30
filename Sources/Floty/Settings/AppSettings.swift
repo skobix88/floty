@@ -19,6 +19,12 @@ final class AppSettings {
         static let activeNoteName = "activeNoteName"
         static let noteOrder = "noteOrder"
         static let tint = "tint"
+        static let clipboardEnabled = "clipboardEnabled"
+        static let clipboardPaused = "clipboardPaused"
+        static let clipboardMaxCount = "clipboardMaxCount"
+        static let clipboardMaxMegabytes = "clipboardMaxMegabytes"
+        static let clipboardExcludedApps = "clipboardExcludedApps"
+        static let clipboardWarningSeen = "clipboardWarningSeen"
     }
 
     /// How far the slider may go towards transparent. Only the backdrop fades,
@@ -30,6 +36,23 @@ final class AppSettings {
     var panelOpacity: Double { didSet { defaults.set(panelOpacity, forKey: Key.panelOpacity) } }
     var isPinned: Bool { didSet { defaults.set(isPinned, forKey: Key.isPinned) } }
     var tint: PanelTint { didSet { defaults.set(tint.rawValue, forKey: Key.tint) } }
+
+    // MARK: - Zwischenablage
+    //
+    // Standardmäßig aus. Eine Aktualisierung darf nicht dazu führen, dass Floty
+    // plötzlich alles mitschreibt, was der Nutzer kopiert.
+    var clipboardEnabled: Bool { didSet { defaults.set(clipboardEnabled, forKey: Key.clipboardEnabled) } }
+    var clipboardPaused: Bool { didSet { defaults.set(clipboardPaused, forKey: Key.clipboardPaused) } }
+    var clipboardMaxCount: Int { didSet { defaults.set(clipboardMaxCount, forKey: Key.clipboardMaxCount) } }
+    var clipboardMaxMegabytes: Int { didSet { defaults.set(clipboardMaxMegabytes, forKey: Key.clipboardMaxMegabytes) } }
+    var clipboardExcludedApps: [String] { didSet { defaults.set(clipboardExcludedApps, forKey: Key.clipboardExcludedApps) } }
+    var clipboardWarningSeen: Bool { didSet { defaults.set(clipboardWarningSeen, forKey: Key.clipboardWarningSeen) } }
+
+    var clipboardLimits: ClipboardHistory.Limits {
+        ClipboardHistory.Limits(maxCount: clipboardMaxCount,
+                                maxTotalBytes: clipboardMaxMegabytes * 1024 * 1024,
+                                maxItemBytes: 20 * 1024 * 1024)
+    }
     var hidesOnClickOutside: Bool { didSet { defaults.set(hidesOnClickOutside, forKey: Key.hidesOnClickOutside) } }
     var activeNoteName: String? { didSet { defaults.set(activeNoteName, forKey: Key.activeNoteName) } }
     /// Tab order by note name. Device local on purpose: the notes folder stays
@@ -53,6 +76,12 @@ final class AppSettings {
         panelOpacity = storedOpacity ?? 0.85
         isPinned = defaults.bool(forKey: Key.isPinned)
         tint = PanelTint(rawValue: defaults.string(forKey: Key.tint) ?? "") ?? .neutral
+        clipboardEnabled = defaults.bool(forKey: Key.clipboardEnabled)
+        clipboardPaused = defaults.bool(forKey: Key.clipboardPaused)
+        clipboardMaxCount = defaults.object(forKey: Key.clipboardMaxCount) as? Int ?? 50
+        clipboardMaxMegabytes = defaults.object(forKey: Key.clipboardMaxMegabytes) as? Int ?? 200
+        clipboardExcludedApps = defaults.stringArray(forKey: Key.clipboardExcludedApps) ?? []
+        clipboardWarningSeen = defaults.bool(forKey: Key.clipboardWarningSeen)
         hidesOnClickOutside = defaults.object(forKey: Key.hidesOnClickOutside) as? Bool ?? true
         activeNoteName = defaults.string(forKey: Key.activeNoteName)
         noteOrder = defaults.stringArray(forKey: Key.noteOrder) ?? []

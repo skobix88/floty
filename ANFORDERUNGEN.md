@@ -130,6 +130,8 @@ weitergereicht und hier erledigt.
 außerhalb schließen (nur wirksam, solange nicht festgepinnt)
 **Verhalten:** Start bei Login · globaler Kurzbefehl
 **Ablage:** Notizordner · Obsidian-Vault-Ordner
+**Zwischenablage:** Hauptschalter · Kurzbefehl · Anzahl · Platzgrenze · Pause ·
+ausgeschlossene Programme · Verlauf leeren
 **Sprache:** folgt der Systemsprache (Deutsch und Englisch)
 **Version:** wird unten im Einstellungsfenster angezeigt
 
@@ -137,14 +139,45 @@ Die Fenstergröße wird nicht eingestellt, sondern gezogen — und gemerkt. Ist 
 gemerkte Position auf keinem vorhandenen Bildschirm mehr erreichbar, öffnet
 Floty wieder an seinem Standardplatz.
 
-## 10. Icon
+## 10. Zwischenablage-Verlauf
+
+Ein zweites Werkzeug unter demselben Dach, **standardmäßig ausgeschaltet**.
+Eingeschaltet merkt sich Floty, was kopiert wurde, und reicht es auf Wunsch
+zurück in die Zwischenablage.
+
+- **Eigenes Fenster, eigener Kurzbefehl** (Vorgabe ⌃⌥⌘V). Es öffnet mittig oben,
+  du wählst, es schließt. Kein Pin — es ist ein Auswahldialog, kein Aufenthaltsort.
+- **Tastatur zuerst:** Cursor im Suchfeld, Tippen filtert über Name und Inhalt,
+  Pfeiltasten wählen, Enter übernimmt, Esc schließt, ⌘⌫ löscht den Eintrag.
+- **Inhalte:** Text und Bilder. Bilder mit Miniatur in der Liste.
+- **Anklicken legt den Eintrag zurück in die Zwischenablage** — kein automatisches
+  Einfügen, das bräuchte die Berechtigung „Bedienungshilfen".
+- **Grenzen:** Anzahl (Vorgabe 50) und Gesamtgröße (Vorgabe 200 MB), je nachdem
+  was zuerst greift. Ein Einzelobjekt über 20 MB wird nicht aufgenommen.
+- **Ablage:** `~/Library/Application Support/Floty/Clipboard`. Nicht im
+  Notizordner — der bleibt Obsidian-tauglich. Der Ordner entsteht erst beim
+  ersten Eintrag.
+
+### Vertraulichkeit
+
+- Als verborgen markierte Inhalte werden **nie** aufgenommen. Passwortmanager
+  kennzeichnen sie nach der Konvention von nspasteboard.org. Das ist fest
+  verdrahtet, keine Einstellung.
+- Programme lassen sich ausschließen. Ehrlich bleiben: macOS verrät nicht, wer
+  kopiert hat — genommen wird das vorderste Programm im Moment der Erkennung.
+  Das stimmt fast immer, ist aber kein Sicherheitsversprechen.
+- Aufzeichnung pausieren und Verlauf leeren sind jederzeit erreichbar.
+- Beim ersten Einschalten wird deutlich gesagt, was mitgeschrieben wird und dass
+  es unverschlüsselt im Benutzerordner liegt.
+
+## 11. Icon
 
 Ein Klemmbrett-Umriss auf dunkler, gerundeter Kachel — passend zur festen
 dunklen Farbgebung. Quelle: `Resources/AppIcon.svg` von Zlatko Najdenovski,
 Lizenz CC Attribution; die Namensnennung ist Pflicht. Der Symbolsatz wird mit
 `scripts/make-icon.swift` erzeugt, damit er aus der Quelle reproduzierbar bleibt.
 
-## 11. Veröffentlichung, Versionierung, Verteilung
+## 12. Veröffentlichung, Versionierung, Verteilung
 
 - Öffentliches GitHub-Repository mit Quellcode, README, Dokumentation der
   wichtigsten Funktionen und Release-Historie.

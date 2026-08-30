@@ -8,10 +8,18 @@ final class MenuBarController {
     private let statusItem: NSStatusItem
     private let onToggle: () -> Void
     private let onOpenSettings: () -> Void
+    private let onOpenClipboard: () -> Void
+    /// Der Eintrag erscheint nur, wenn die Funktion eingeschaltet ist.
+    private let isClipboardEnabled: () -> Bool
 
-    init(onToggle: @escaping () -> Void, onOpenSettings: @escaping () -> Void) {
+    init(onToggle: @escaping () -> Void,
+         onOpenSettings: @escaping () -> Void,
+         onOpenClipboard: @escaping () -> Void,
+         isClipboardEnabled: @escaping () -> Bool) {
         self.onToggle = onToggle
         self.onOpenSettings = onOpenSettings
+        self.onOpenClipboard = onOpenClipboard
+        self.isClipboardEnabled = isClipboardEnabled
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem.button {
@@ -42,6 +50,11 @@ final class MenuBarController {
         menu.addItem(withTitle: String(localized: "Floty öffnen"),
                      action: #selector(toggleFromMenu), keyEquivalent: "")
             .target = self
+        if isClipboardEnabled() {
+            menu.addItem(withTitle: String(localized: "Zwischenablage …"),
+                         action: #selector(openClipboardFromMenu), keyEquivalent: "")
+                .target = self
+        }
         menu.addItem(withTitle: String(localized: "Einstellungen …"),
                      action: #selector(openSettingsFromMenu), keyEquivalent: ",")
             .target = self
@@ -59,4 +72,6 @@ final class MenuBarController {
     @objc private func toggleFromMenu() { onToggle() }
 
     @objc private func openSettingsFromMenu() { onOpenSettings() }
+
+    @objc private func openClipboardFromMenu() { onOpenClipboard() }
 }

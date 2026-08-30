@@ -23,6 +23,15 @@ enum PanelPlacement {
         )
     }
 
+    /// Where a picker window opens: horizontally centred, near the top - the
+    /// place the eye already looks, like Spotlight.
+    static func pickerFrame(in visibleFrame: NSRect, size: NSSize) -> NSRect {
+        NSRect(x: visibleFrame.midX - size.width / 2,
+               y: visibleFrame.maxY - size.height - visibleFrame.height * 0.12,
+               width: size.width,
+               height: size.height)
+    }
+
     /// Returns the stored frame when enough of it is on one of the screens,
     /// otherwise the fallback.
     static func resolve(stored: NSRect?, screens: [NSRect], fallback: NSRect) -> NSRect {

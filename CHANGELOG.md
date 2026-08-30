@@ -3,6 +3,17 @@
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
 Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
+## [Unveröffentlicht]
+
+### Hinzugefügt
+
+- **Zwischenablage-Verlauf**, standardmäßig ausgeschaltet. Eigenes Fenster mit
+  eigenem Kurzbefehl (⌃⌥⌘V), Text und Bilder, Suche und Tastaturbedienung,
+  Anklicken legt den Eintrag zurück in die Zwischenablage. Grenzen nach Anzahl
+  und Platz. Als verborgen markierte Inhalte aus Passwortmanagern werden nie
+  aufgenommen; Programme lassen sich ausschließen, die Aufzeichnung pausieren
+  und der Verlauf jederzeit leeren.
+
 ## [1.0.0-rc.1] – 2026-08-26
 
 Erste vollständige Fassung, als Vorabversion zum Ausprobieren.

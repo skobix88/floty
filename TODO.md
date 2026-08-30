@@ -22,6 +22,13 @@
   zeigt die Meldung an; ob das im echten Release-Bündel funktioniert, ist erst
   mit Developer ID zu beurteilen.
 
+- **Anheften von Dauereinträgen** im Zwischenablage-Verlauf. Meistgenutzte
+  Funktion echter Zwischenablage-Programme, bewusst aus der ersten Fassung
+  herausgehalten: sie zieht eine zweite Liste mit eigener Sortierung nach sich.
+- **Automatisches Einfügen** nach der Auswahl. Bräuchte die Berechtigung
+  „Bedienungshilfen" — Tastatursteuerung für alle Programme. Zu großes
+  Zugeständnis für eine App, die sonst ohne Sonderrechte auskommt.
+
 ## Zu klären
 
 - Wann aus `1.0.0-rc.1` die 1.0.0 wird — dafür sollten die Bedienwege, die in

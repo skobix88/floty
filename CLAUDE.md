@@ -43,7 +43,7 @@ Code. Commit-Nachricht beantwortet das Warum, nicht das Was.
 ## Architektur
 
 ```
-Sources/Floty/{App,Panel,Editor,Markdown,Storage,Integrations,Settings,Resources}
+Sources/Floty/{App,Panel,Editor,Markdown,Clipboard,Storage,Integrations,Settings,Resources}
 Tests/FlotyTests · scripts/release.sh · project.yml
 ```
 
@@ -70,8 +70,13 @@ Tests/FlotyTests · scripts/release.sh · project.yml
 5. Immer dunkel. Zwei Farbfamilien zur Wahl (`PanelTint`): Neutralgrau und
    Mitternachtsblau `#171E30`. Kein Hell-Modus ohne Absprache.
 6. Jede Prüfung ist eine dauerhafte Datei in `Tests/FlotyTests/`, nie ein
-   Wegwerfprogramm in `/tmp` oder im Chat. Tests schreiben nie in den echten
-   Notizordner: `NoteStore` verweigert ihn, wenn `FLOTY_TESTING=1` gesetzt ist.
+   Wegwerfprogramm in `/tmp` oder im Chat. Tests schreiben nie in echte
+   Nutzerdaten: `NoteStore` und `ClipboardStore` verweigern sie, wenn
+   `FLOTY_TESTING=1` gesetzt ist.
+7. Der Zwischenablage-Verlauf ist standardmäßig aus und nimmt als verborgen
+   markierte Inhalte (`org.nspasteboard.ConcealedType` und Geschwister) nie auf.
+   Das ist keine Einstellung. Ausgeschaltet läuft kein Timer und entsteht kein
+   Ordner.
 
 ## Arbeitsweise
 

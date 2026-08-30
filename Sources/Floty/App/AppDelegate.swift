@@ -10,6 +10,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var panelController: PanelController?
     private var menuBarController: MenuBarController?
     private var settingsWindowController: SettingsWindowController?
+    private var clipboardWatcher: ClipboardWatcher?
+    private var clipboardWindowController: ClipboardWindowController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // The unit test bundle is hosted by this app, so launching would
@@ -29,9 +31,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         settings.notesFolder = folder
         self.store = store
 
-        let settingsWindowController = SettingsWindowController(settings: settings) { [weak self] url in
-            self?.changeNotesFolder(to: url)
-        }
+        let clipboard = setUpClipboard(settings: settings)
+
+        let settingsWindowController = SettingsWindowController(
+            settings: settings,
+            clipboard: clipboard,
+            onNotesFolderChanged: { [weak self] url in self?.changeNotesFolder(to: url) }
+        )
         self.settingsWindowController = settingsWindowController
 
         let panelController = PanelController(store: store, settings: settings) {
@@ -41,10 +47,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         menuBarController = MenuBarController(
             onToggle: { panelController.toggle() },
-            onOpenSettings: { settingsWindowController.show() }
+            onOpenSettings: { settingsWindowController.show() },
+            onOpenClipboard: { [weak self] in self?.openClipboard() },
+            isClipboardEnabled: { settings.clipboardEnabled }
         )
 
         KeyboardShortcuts.onKeyUp(for: .togglePanel) { panelController.toggle() }
+        KeyboardShortcuts.onKeyUp(for: .toggleClipboard) { [weak self] in self?.openClipboard() }
 
         observePinState(settings: settings, panelController: panelController)
         panelController.show()
@@ -84,6 +93,53 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         store = newStore
         panelController.replaceStore(newStore)
+    }
+
+    // MARK: - Zwischenablage
+
+    /// Der Verlauf wird immer aufgebaut, aber nichts läuft, solange die Funktion
+    /// ausgeschaltet ist: kein Timer, kein Fenster, kein Menüeintrag.
+    private func setUpClipboard(settings: AppSettings) -> ClipboardWatcher? {
+        guard let store = try? ClipboardStore() else { return nil }
+        let watcher = ClipboardWatcher(store: store,
+                                       limits: settings.clipboardLimits,
+                                       excludedApps: Set(settings.clipboardExcludedApps))
+        clipboardWatcher = watcher
+        clipboardWindowController = ClipboardWindowController(watcher: watcher, settings: settings)
+        applyClipboardSettings(settings)
+        observeClipboardSettings(settings)
+        return watcher
+    }
+
+    private func applyClipboardSettings(_ settings: AppSettings) {
+        guard let watcher = clipboardWatcher else { return }
+        watcher.excludedApps = Set(settings.clipboardExcludedApps)
+        watcher.applyLimits(settings.clipboardLimits)
+        if settings.clipboardEnabled && !settings.clipboardPaused {
+            watcher.start()
+        } else {
+            watcher.stop()
+        }
+    }
+
+    private func observeClipboardSettings(_ settings: AppSettings) {
+        withObservationTracking {
+            _ = settings.clipboardEnabled
+            _ = settings.clipboardPaused
+            _ = settings.clipboardMaxCount
+            _ = settings.clipboardMaxMegabytes
+            _ = settings.clipboardExcludedApps
+        } onChange: {
+            Task { @MainActor [weak self] in
+                self?.applyClipboardSettings(settings)
+                self?.observeClipboardSettings(settings)
+            }
+        }
+    }
+
+    private func openClipboard() {
+        guard settings?.clipboardEnabled == true else { return }
+        clipboardWindowController?.toggle()
     }
 
     // MARK: - Pin

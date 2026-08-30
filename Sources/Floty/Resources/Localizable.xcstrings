@@ -23,6 +23,17 @@
         }
       }
     },
+    "Alle Einträge und die dazugehörigen Bilddateien werden entfernt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every entry and its image files will be removed."
+          }
+        }
+      }
+    },
     "Als Markdown-Datei sichern": {
       "extractionState": "manual",
       "localizations": {
@@ -56,6 +67,17 @@
         }
       }
     },
+    "Aufzeichnung pausieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause recording"
+          }
+        }
+      }
+    },
     "Behalten": {
       "extractionState": "manual",
       "localizations": {
@@ -74,6 +96,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hide when clicking outside"
+          }
+        }
+      }
+    },
+    "Belegt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In use"
+          }
+        }
+      }
+    },
+    "Bild %@ × %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Image %@ × %@"
           }
         }
       }
@@ -111,6 +155,17 @@
         }
       }
     },
+    "Den gesamten Verlauf löschen?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete the entire history?"
+          }
+        }
+      }
+    },
     "Der Notizordner ist nicht erreichbar.": {
       "extractionState": "manual",
       "localizations": {
@@ -118,6 +173,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "The notes folder cannot be reached."
+          }
+        }
+      }
+    },
+    "Der Verlauf zeichnet mit, was du kopierst.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The history records what you copy."
           }
         }
       }
@@ -151,6 +217,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Settings …"
+          }
+        }
+      }
+    },
+    "Einträge: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entries: %lld"
           }
         }
       }
@@ -211,6 +288,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Quit Floty"
+          }
+        }
+      }
+    },
+    "Floty merkt sich, was du kopierst, und legt es lokal ab. Als verborgen markierte Inhalte aus Passwortmanagern werden nie aufgenommen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Floty remembers what you copy and keeps it on this Mac. Items marked as concealed by password managers are never recorded."
           }
         }
       }
@@ -292,6 +380,39 @@
         }
       }
     },
+    "Kopierter Text und kopierte Bilder werden unverschlüsselt in deinem Benutzerordner abgelegt. Passwortmanager kennzeichnen ihre Inhalte, die nimmt Floty nicht auf — ein Passwort aus einer E-Mail trägt diese Kennzeichnung aber nicht.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied text and images are stored unencrypted in your home folder. Password managers mark their items and Floty skips those — but a password copied out of an email carries no such mark."
+          }
+        }
+      }
+    },
+    "Kurzbefehl": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shortcut"
+          }
+        }
+      }
+    },
+    "Leerer Text": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empty text"
+          }
+        }
+      }
+    },
     "Loslösen – Panel blendet sich beim Klick außerhalb aus": {
       "extractionState": "manual",
       "localizations": {
@@ -369,6 +490,17 @@
         }
       }
     },
+    "Nicht aufzeichnen aus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never record from"
+          }
+        }
+      }
+    },
     "Nicht gesetzt": {
       "extractionState": "manual",
       "localizations": {
@@ -380,6 +512,17 @@
         }
       }
     },
+    "Nichts gefunden.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing found."
+          }
+        }
+      }
+    },
     "Noch nicht gewählt": {
       "extractionState": "manual",
       "localizations": {
@@ -387,6 +530,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Not chosen yet"
+          }
+        }
+      }
+    },
+    "Noch nichts kopiert.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing copied yet."
           }
         }
       }
@@ -457,6 +611,28 @@
         }
       }
     },
+    "Platz höchstens: %lld MB": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "At most: %lld MB"
+          }
+        }
+      }
+    },
+    "Programm hinzufügen …": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add an app …"
+          }
+        }
+      }
+    },
     "Schließen": {
       "extractionState": "manual",
       "localizations": {
@@ -475,6 +651,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Start at login"
+          }
+        }
+      }
+    },
+    "Suchen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search"
           }
         }
       }
@@ -523,6 +710,39 @@
         }
       }
     },
+    "Verlauf der Zwischenablage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clipboard history"
+          }
+        }
+      }
+    },
+    "Verlauf leeren": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear history"
+          }
+        }
+      }
+    },
+    "Verlauf leeren …": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear history …"
+          }
+        }
+      }
+    },
     "Version": {
       "extractionState": "manual",
       "localizations": {
@@ -563,6 +783,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Back to editing"
+          }
+        }
+      }
+    },
+    "Zwischenablage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clipboard"
+          }
+        }
+      }
+    },
+    "Zwischenablage …": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clipboard …"
+          }
+        }
+      }
+    },
+    "gerade eben": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "just now"
+          }
+        }
+      }
+    },
+    "gestern %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "yesterday %@"
           }
         }
       }
